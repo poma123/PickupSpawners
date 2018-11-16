@@ -1,0 +1,8 @@
+author: poma123
+main: me.poma123.spawners.Command
+name: PickupSpawners
+api-version: 1.13
+version: 2.1
+permissions:
+    spawnerlimit.bypass:
+        default: op
