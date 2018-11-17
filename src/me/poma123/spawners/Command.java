@@ -13,8 +13,11 @@ public class Command extends JavaPlugin implements org.bukkit.event.Listener {
 	public static Material material;
 	public static List<String> entities = new ArrayList<String>();
 	
+	@Override
 	public void onEnable() {
 
+		Metrics metrics = new Metrics(this);
+				
 		if (getVersion().contains("1_13")) {
 			material = Material.getMaterial("SPAWNER");
 			getLogger().info("1.13 native version detected. Configuring 1.13-1.13.2 compatibility...");
