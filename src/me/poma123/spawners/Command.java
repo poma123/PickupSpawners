@@ -1,13 +1,18 @@
 package me.poma123.spawners;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Command extends JavaPlugin implements org.bukkit.event.Listener {
 	SettingsManager s = SettingsManager.getInstance();
 	public static Material material;
-
+	public static List<String> entities = new ArrayList<String>();
+	
 	public void onEnable() {
 
 		if (getVersion().contains("1_13")) {
@@ -21,6 +26,12 @@ public class Command extends JavaPlugin implements org.bukkit.event.Listener {
 			getLogger().info("Done!");
 		}
 
+		for(EntityType string : EntityType.values()) {
+		    entities.add(string.toString().toLowerCase());
+		}
+		
+		getCommand("pickupspawners").setExecutor(new PSCommand());
+		getCommand("pickupspawners").setTabCompleter(new PSCommand());
 		Bukkit.getPluginManager().registerEvents(new Listener(), this);
 		saveConfig();
 		saveDefaultConfig();

@@ -2,7 +2,13 @@ author: poma123
 main: me.poma123.spawners.Command
 name: PickupSpawners
 api-version: 1.13
-version: 2.2
+version: 2.3
 permissions:
     spawnerlimit.bypass:
         default: op
+    pickupspawners.give:
+        default: op    
+commands:
+    pickupspawners:
+        usage: /<command>
+        aliases: [spawners, pspawners, pickups]

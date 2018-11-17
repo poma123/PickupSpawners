@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -27,12 +26,10 @@ public class Listener implements org.bukkit.event.Listener {
 
 	private Material material = Command.material;
 
-	public String getLang(Player p) {
+	public static String getLang(Player p) {
 		String[] s = StringUtils.split(p.spigot().getLocale(), '_');
 		return s[0];
 	}
-
-	
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
 	public void onSpawnerBreak(BlockBreakEvent e) {
@@ -44,20 +41,19 @@ public class Listener implements org.bukkit.event.Listener {
 			int limitcount = (int) limitcount1;
 			if (limitcount > 0) {
 
-				
-				
-					if (s.getType().equals(material) && !e.getPlayer().hasPermission("spawnerlimit.bypass")) {
-						if (limit.containsKey(e.getPlayer().getName())) {
-							if (limit.get(e.getPlayer().getName()) >= limitcount) {
+				if (s.getType().equals(material) && !e.getPlayer().hasPermission("spawnerlimit.bypass")) {
+					if (limit.containsKey(e.getPlayer().getName())) {
+						if (limit.get(e.getPlayer().getName()) >= limitcount) {
 
-								e.getPlayer().sendMessage(lang.equals("hu")
-										? "§cElérted a napi kiüthető spawner limitet (" + limitcount + ")."
-										: "§cYou have reached the daily spawner break limit (" + limitcount + ").");
-								e.setCancelled(true);
-								return;
-							}
+							e.getPlayer()
+									.sendMessage(lang.equals("hu")
+											? "§cElérted a napi kiüthető spawner limitet (" + limitcount + ")."
+											: "§cYou have reached the daily spawner break limit (" + limitcount + ").");
+							e.setCancelled(true);
+							return;
 						}
 					}
+				}
 			}
 		} catch (Exception ex) {
 
@@ -73,7 +69,7 @@ public class Listener implements org.bukkit.event.Listener {
 
 				ItemStack spawner = new ItemStack(material, 1);
 				ItemMeta swmeta = spawner.getItemMeta();
-			//	swmeta.setLocalizedName();
+				// swmeta.setLocalizedName();
 				swmeta.setDisplayName("§e" + cs.getSpawnedType().name().toLowerCase() + " §7Spawner");
 
 				e.setExpToDrop(0);
@@ -82,7 +78,7 @@ public class Listener implements org.bukkit.event.Listener {
 				s.getWorld().dropItemNaturally(s.getLocation(), spawner);
 
 				e.getPlayer().sendMessage(lang.equals("hu")
-						? "§7Ki�t�tt�l egy §e" + cs.getSpawnedType().name().toLowerCase() + " §7spawnert!"
+						? "§7Kiütöttél egy §e" + cs.getSpawnedType().name().toLowerCase() + " §7spawnert!"
 						: "§7You have broken out one §e" + cs.getSpawnedType().name().toLowerCase() + "§7 spawner.");
 				if (!e.getPlayer().hasPermission("spawnerlimit.bypass")) {
 					if (limit.containsKey(e.getPlayer().getName())) {
@@ -122,12 +118,22 @@ public class Listener implements org.bukkit.event.Listener {
 					}
 
 					// spawner.setCreatureTypeByName(spawnerName);
-					spawner.setSpawnedType(EntityType.valueOf(spawnerName));
-					spawner.update(true, true);
+					try {
+						spawner.setSpawnedType(EntityType.valueOf(spawnerName));
+						spawner.update(true, true);
 
-					event.getPlayer().sendMessage(
-							lang.equals("hu") ? "§7Letettél egy §e" + spawnerName.toLowerCase() + " §7spawnert!"
-									: "§7You have placen one §e" + spawnerName.toLowerCase() + "§7 spawner.");
+						event.getPlayer().sendMessage(
+								lang.equals("hu") ? "§7Letettél egy §e" + spawnerName.toLowerCase() + " §7spawnert!"
+										: "§7You have placen one §e" + spawnerName.toLowerCase() + "§7 spawner.");
+					} catch (IllegalArgumentException e) {
+						spawner.setSpawnedType(EntityType.valueOf("PIG"));
+						spawner.update(true, true);
+
+						event.getPlayer().sendMessage(
+								lang.equals("hu") ? "§7Letettél egy §epig §7spawnert!"
+										: "§7You have placen one §epig §7spawner.");
+					}
+					
 					return;
 				}
 			}
