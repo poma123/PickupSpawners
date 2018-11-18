@@ -15,9 +15,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
+
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 public class Listener implements org.bukkit.event.Listener {
 	Map<String, Integer> limit = new TreeMap<String, Integer>();
@@ -29,6 +34,40 @@ public class Listener implements org.bukkit.event.Listener {
 	public static String getLang(Player p) {
 		String[] s = StringUtils.split(p.spigot().getLocale(), '_');
 		return s[0];
+	}
+
+	public static TextComponent getHoverClick(String message, String hover, String click) {
+		TextComponent text = new TextComponent(message);
+		text.setClickEvent(
+				new net.md_5.bungee.api.chat.ClickEvent(net.md_5.bungee.api.chat.ClickEvent.Action.OPEN_URL, click));
+		text.setHoverEvent(new net.md_5.bungee.api.chat.HoverEvent(HoverEvent.Action.SHOW_TEXT,
+				new ComponentBuilder(hover).create()));
+		return text;
+	}
+
+	@EventHandler
+	public void onOpJoin(PlayerJoinEvent e) {
+		if (sett.getConfig().getBoolean("update-check")) {
+
+			Player p = e.getPlayer();
+			if (p.isOp()) {
+
+				if (!Updater.version.equalsIgnoreCase(plugin.getDescription().getVersion())) {
+					p.spigot().sendMessage(getLang(p).equalsIgnoreCase("hu") ? getHoverClick(
+							"§6[PickupSpawners] §7Elérhető egy frissítés a pluginhoz. \n§6[PickupSpawners] §7Jelenlegi §cv"
+									+ plugin.getDescription().getVersion() + "§7, legfrissebb §av" + Updater.version,
+							ChatColor.GREEN + Updater.SPIGOT_DOWNLOAD + Updater.SPIGOT_DOWNLOAD_VERSION
+									+ Updater.downloadID,
+							Updater.SPIGOT_DOWNLOAD + Updater.SPIGOT_DOWNLOAD_VERSION + Updater.downloadID)
+							: getHoverClick(
+									"§6[PickupSpawners] §7There is a new update available. \n§6[PickupSpawners] §7Running §cv"
+											+ plugin.getDescription().getVersion() + "§7, latest §av" + Updater.version,
+									ChatColor.GREEN + Updater.SPIGOT_DOWNLOAD + Updater.SPIGOT_DOWNLOAD_VERSION
+											+ Updater.downloadID,
+									Updater.SPIGOT_DOWNLOAD + Updater.SPIGOT_DOWNLOAD_VERSION + Updater.downloadID));
+				}
+			}
+		}
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
@@ -122,18 +161,18 @@ public class Listener implements org.bukkit.event.Listener {
 						spawner.setSpawnedType(EntityType.valueOf(spawnerName));
 						spawner.update(true, true);
 
-						event.getPlayer().sendMessage(
-								lang.equals("hu") ? "§7Letettél egy §e" + spawnerName.toLowerCase() + " §7spawnert!"
+						event.getPlayer()
+								.sendMessage(lang.equals("hu")
+										? "§7Letettél egy §e" + spawnerName.toLowerCase() + " §7spawnert!"
 										: "§7You have placen one §e" + spawnerName.toLowerCase() + "§7 spawner.");
 					} catch (IllegalArgumentException e) {
 						spawner.setSpawnedType(EntityType.valueOf("PIG"));
 						spawner.update(true, true);
 
-						event.getPlayer().sendMessage(
-								lang.equals("hu") ? "§7Letettél egy §epig §7spawnert!"
-										: "§7You have placen one §epig §7spawner.");
+						event.getPlayer().sendMessage(lang.equals("hu") ? "§7Letettél egy §epig §7spawnert!"
+								: "§7You have placen one §epig §7spawner.");
 					}
-					
+
 					return;
 				}
 			}
