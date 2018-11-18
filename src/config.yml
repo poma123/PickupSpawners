@@ -1,4 +1,3 @@
-#Integer. Set 0 to disable.
-daily-broke-limit: 0
-
+daily-broke-limit: 5
 update-check: true
+item: {}

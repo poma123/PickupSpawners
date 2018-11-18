@@ -1,14 +1,17 @@
 package me.poma123.spawners;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -44,6 +47,14 @@ public class Listener implements org.bukkit.event.Listener {
 				new ComponentBuilder(hover).create()));
 		return text;
 	}
+	public static TextComponent getHoverClickcmd(String message, String hover, String click) {
+		TextComponent text = new TextComponent(message);
+		text.setClickEvent(
+				new net.md_5.bungee.api.chat.ClickEvent(net.md_5.bungee.api.chat.ClickEvent.Action.RUN_COMMAND, click));
+		text.setHoverEvent(new net.md_5.bungee.api.chat.HoverEvent(HoverEvent.Action.SHOW_TEXT,
+				new ComponentBuilder(hover).create()));
+		return text;
+	}
 
 	@EventHandler
 	public void onOpJoin(PlayerJoinEvent e) {
@@ -69,13 +80,15 @@ public class Listener implements org.bukkit.event.Listener {
 			}
 		}
 	}
+	
+
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
 	public void onSpawnerBreak(BlockBreakEvent e) {
 		Block s = e.getBlock();
 		String lang = getLang(e.getPlayer());
 		Object limitcount1 = sett.getConfig().get("daily-broke-limit");
-
+		ItemStack item = e.getPlayer().getInventory().getItemInMainHand();
 		try {
 			int limitcount = (int) limitcount1;
 			if (limitcount > 0) {
@@ -100,8 +113,55 @@ public class Listener implements org.bukkit.event.Listener {
 					"§c[PickupSpawners-ERROR] The daily limit is not an integer in the config.yml. Please fix it. Daily limit skipped.");
 		}
 
-		if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.DIAMOND_PICKAXE) && e.getPlayer()
-				.getInventory().getItemInMainHand().getEnchantments().containsKey(Enchantment.SILK_TOUCH)) {
+		boolean isGoodItem = false;
+
+		for (String string : sett.getConfig().getConfigurationSection("item").getKeys(false)) {
+			Material mat = Material
+					.matchMaterial(sett.getConfig().getString("item." + string + ".material").toUpperCase());
+			List<String> enchants = new ArrayList<String>();
+			if (sett.getConfig().getStringList("item." + string + ".enchants") != null) {
+				enchants = sett.getConfig().getStringList("item." + string + ".enchants");
+			}
+
+			if (enchants.isEmpty()) {
+				if (item.getType().equals(mat)) {
+					isGoodItem = true;
+				}
+			} else {
+
+				boolean containsAllEnchants = false;
+
+				String enchantments = "";
+
+				for (String ench : sett.getConfig().getStringList("item." + string + ".enchants")) {
+
+					if (ench.contains(":")) {
+						enchantments = enchantments + "(?=.*" + ench.split(":")[0].toUpperCase() + "]="+ ench.split(":")[1] + ")";
+					} else {
+						enchantments = enchantments + "(?=.*" + ench.toUpperCase() + "]=1" + ")";
+					}
+				}
+
+				Pattern pattern = Pattern.compile(enchantments);
+				if (pattern.matcher(item.getEnchantments().toString()).find()) {
+					containsAllEnchants = true;
+				}
+
+				if (item.getType().equals(mat) && containsAllEnchants) {
+					isGoodItem = true;
+				}
+
+			}
+
+			if (isGoodItem == true) {
+				break;
+
+			}
+		}
+
+		// if (item.getType().equals(Material.DIAMOND_PICKAXE)&&
+		// item.getEnchantments().containsKey(Enchantment.SILK_TOUCH)) {
+		if (isGoodItem) {
 			if (s.getType().equals(material)) {
 
 				CreatureSpawner cs = (CreatureSpawner) s.getState();
