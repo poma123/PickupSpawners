@@ -84,9 +84,9 @@ public class PSCommand implements CommandExecutor, TabCompleter {
 				} else if (args[0].equalsIgnoreCase("additem")) {
 					if (sender.hasPermission("pickupspawners.additem")) {
 						if (!p.getInventory().getItemInMainHand().getType().equals(Material.AIR)) {
-							String random = "random" + me.poma123.spawners.Command.generateRandomString(5);
+							String random = "random" + me.poma123.spawners.Command.generateRandomString(7);
 							if (sett.getConfig().get("item." + random) != null) {
-								random = "random" + me.poma123.spawners.Command.generateRandomString(5);
+								random = "random" + me.poma123.spawners.Command.generateRandomString(7);
 							}
 							Material mat = p.getInventory().getItemInMainHand().getType();
 							List<String> enchants = new ArrayList<String>();
