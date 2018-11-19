@@ -1,3 +1,5 @@
 daily-broke-limit: 5
 update-check: true
+auto-locale: true
+locale: 'en_US'
 item: {}

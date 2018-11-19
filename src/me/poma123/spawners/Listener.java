@@ -23,6 +23,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
+import me.poma123.spawners.language.Language;
+import me.poma123.spawners.language.Language.LocalePath;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -39,6 +41,12 @@ public class Listener implements org.bukkit.event.Listener {
 		return s[0];
 	}
 
+	public static String getLangExact(Player p) {
+
+		return p.spigot().getLocale();
+		
+	}
+
 	public static TextComponent getHoverClick(String message, String hover, String click) {
 		TextComponent text = new TextComponent(message);
 		text.setClickEvent(
@@ -47,6 +55,7 @@ public class Listener implements org.bukkit.event.Listener {
 				new ComponentBuilder(hover).create()));
 		return text;
 	}
+
 	public static TextComponent getHoverClickcmd(String message, String hover, String click) {
 		TextComponent text = new TextComponent(message);
 		text.setClickEvent(
@@ -80,8 +89,6 @@ public class Listener implements org.bukkit.event.Listener {
 			}
 		}
 	}
-	
-
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
 	public void onSpawnerBreak(BlockBreakEvent e) {
@@ -97,10 +104,8 @@ public class Listener implements org.bukkit.event.Listener {
 					if (limit.containsKey(e.getPlayer().getName())) {
 						if (limit.get(e.getPlayer().getName()) >= limitcount) {
 
-							e.getPlayer()
-									.sendMessage(lang.equals("hu")
-											? "§cElérted a napi kiüthető spawner limitet (" + limitcount + ")."
-											: "§cYou have reached the daily spawner break limit (" + limitcount + ").");
+							e.getPlayer().sendMessage(Language.getReplacedLocale(e.getPlayer(), LocalePath.LIMIT_REACH, "%limit%", String.valueOf(limitcount)));
+							//e.getPlayer().sendMessage(lang.equals("hu")? "§cElérted a napi kiüthető spawner limitet (" + limitcount + ").": "§cYou have reached the daily spawner break limit (" + limitcount + ").");
 							e.setCancelled(true);
 							return;
 						}
@@ -111,6 +116,7 @@ public class Listener implements org.bukkit.event.Listener {
 
 			System.out.println(
 					"§c[PickupSpawners-ERROR] The daily limit is not an integer in the config.yml. Please fix it. Daily limit skipped.");
+			ex.printStackTrace();
 		}
 
 		boolean isGoodItem = false;
@@ -136,7 +142,8 @@ public class Listener implements org.bukkit.event.Listener {
 				for (String ench : sett.getConfig().getStringList("item." + string + ".enchants")) {
 
 					if (ench.contains(":")) {
-						enchantments = enchantments + "(?=.*" + ench.split(":")[0].toUpperCase() + "]="+ ench.split(":")[1] + ")";
+						enchantments = enchantments + "(?=.*" + ench.split(":")[0].toUpperCase() + "]="
+								+ ench.split(":")[1] + ")";
 					} else {
 						enchantments = enchantments + "(?=.*" + ench.toUpperCase() + "]=1" + ")";
 					}
@@ -175,10 +182,8 @@ public class Listener implements org.bukkit.event.Listener {
 				spawner.setItemMeta(swmeta);
 
 				s.getWorld().dropItemNaturally(s.getLocation(), spawner);
-
-				e.getPlayer().sendMessage(lang.equals("hu")
-						? "§7Kiütöttél egy §e" + cs.getSpawnedType().name().toLowerCase() + " §7spawnert!"
-						: "§7You have broken out one §e" + cs.getSpawnedType().name().toLowerCase() + "§7 spawner.");
+				e.getPlayer().sendMessage(Language.getReplacedLocale(e.getPlayer(), LocalePath.BREAK, "%type%", cs.getSpawnedType().name().toLowerCase()));
+			//	e.getPlayer().sendMessage(lang.equals("hu")? "§7Kiütöttél egy §e" + cs.getSpawnedType().name().toLowerCase() + " §7spawnert!"						: "§7You have broken out one §e" + cs.getSpawnedType().name().toLowerCase() + "§7 spawner.");
 				if (!e.getPlayer().hasPermission("spawnerlimit.bypass")) {
 					if (limit.containsKey(e.getPlayer().getName())) {
 						Integer value = limit.get(e.getPlayer().getName()) + 1;
@@ -221,16 +226,14 @@ public class Listener implements org.bukkit.event.Listener {
 						spawner.setSpawnedType(EntityType.valueOf(spawnerName));
 						spawner.update(true, true);
 
-						event.getPlayer()
-								.sendMessage(lang.equals("hu")
-										? "§7Letettél egy §e" + spawnerName.toLowerCase() + " §7spawnert!"
-										: "§7You have placen one §e" + spawnerName.toLowerCase() + "§7 spawner.");
+						event.getPlayer().sendMessage(Language.getReplacedLocale(event.getPlayer(), LocalePath.PLACE, "%type%", spawnerName.toLowerCase()));
+						//event.getPlayer().sendMessage(lang.equals("hu")? "§7Letettél egy §e" + spawnerName.toLowerCase() + " §7spawnert!"							: "§7You have placen one §e" + spawnerName.toLowerCase() + "§7 spawner.");
 					} catch (IllegalArgumentException e) {
 						spawner.setSpawnedType(EntityType.valueOf("PIG"));
 						spawner.update(true, true);
 
-						event.getPlayer().sendMessage(lang.equals("hu") ? "§7Letettél egy §epig §7spawnert!"
-								: "§7You have placen one §epig §7spawner.");
+						event.getPlayer().sendMessage(Language.getReplacedLocale(event.getPlayer(), LocalePath.PLACE, "%type%", "pig"));
+						//event.getPlayer().sendMessage(lang.equals("hu") ? "§7Letettél egy §epig §7spawnert!": "§7You have placen one §epig §7spawner.");
 					}
 
 					return;

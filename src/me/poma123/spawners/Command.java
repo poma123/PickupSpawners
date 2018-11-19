@@ -10,6 +10,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import me.poma123.spawners.language.Language;
+
 public class Command extends JavaPlugin implements org.bukkit.event.Listener {
 	SettingsManager s = SettingsManager.getInstance();
 	public static Material material;
@@ -27,6 +29,12 @@ public class Command extends JavaPlugin implements org.bukkit.event.Listener {
 
 	@Override
 	public void onEnable() {
+		
+		
+		Language.saveLocales();
+		
+		
+		
 		getLogger().info("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-");
 		getLogger().info("-+      PickupSpawners       +-");
 		getLogger().info("-+        by poma123         +-");
@@ -51,6 +59,7 @@ public class Command extends JavaPlugin implements org.bukkit.event.Listener {
 			entities.add(string.toString().toLowerCase());
 		}
 
+		
 		getCommand("pickupspawners").setExecutor(new PSCommand());
 		getCommand("pickupspawners").setTabCompleter(new PSCommand());
 		Bukkit.getPluginManager().registerEvents(new Listener(), this);

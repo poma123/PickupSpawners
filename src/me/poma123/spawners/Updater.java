@@ -9,6 +9,7 @@ import org.bukkit.plugin.Plugin;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.logging.Level;
 
 public class Updater {
@@ -223,16 +224,27 @@ public class Updater {
 		BufferedInputStream in = null;
 		FileOutputStream fout = null;
 
+		
 		try {
-			// URL url = new URL(downloadLink + "?version=248800");
-			URL url = new URL(SPIGOT_DOWNLOAD + SPIGOT_DOWNLOAD_VERSION + downloadID);
-			in = new BufferedInputStream(url.openStream());
+			 URL url = new URL(downloadLink);
+			 URLConnection conn = url.openConnection();
+			 String redirect = conn.getHeaderField("Location");
+			 if (redirect != null){
+			     conn = new URL(redirect).openConnection();
+			     
+			 }
+			 
+		//	URL url = new URL(SPIGOT_DOWNLOAD + SPIGOT_DOWNLOAD_VERSION + downloadID);
+			in = new BufferedInputStream(conn.getInputStream());
+			
+			
 			fout = new FileOutputStream(new File(updateFolder, file.getName()));
-
+			
 			final byte[] data = new byte[4096];
 			int count;
 			while ((count = in.read(data, 0, 4096)) != -1) {
 				fout.write(data, 0, count);
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -277,7 +289,7 @@ public class Updater {
 
 		public void run() {
 			if (checkResource(downloadLink)) {
-				downloadLink = downloadLink + DOWNLOAD;
+				downloadLink = downloadLink + VERSIONS +  "/latest/download";
 				checkUpdate();
 			}
 		}
