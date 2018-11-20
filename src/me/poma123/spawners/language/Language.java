@@ -42,8 +42,18 @@ public class Language {
 	public static void saveLocales() {
 		File enFile = new File(
 				plugin.getDataFolder().getAbsolutePath() + File.separator + "language" + File.separator + "en_US.yml");
+		File folder = new File(plugin.getDataFolder().getAbsolutePath() + File.separator + "language");
+		if (!folder.exists()) {
+			folder.mkdirs();
+		}
 		if (!enFile.exists()) {
-			enFile.mkdirs();
+			try {
+			enFile.createNewFile();
+			
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		FileConfiguration en = YamlConfiguration.loadConfiguration(enFile);
@@ -60,7 +70,12 @@ public class Language {
 		File huFile = new File(
 				plugin.getDataFolder().getAbsolutePath() + File.separator + "language" + File.separator + "hu_HU.yml");
 		if (!huFile.exists()) {
-			huFile.mkdirs();
+			try {
+				huFile.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		FileConfiguration hu = YamlConfiguration.loadConfiguration(huFile);
 		hu.addDefault("break", "§7Kiütöttél egy §e%type%§7 spawnert.");

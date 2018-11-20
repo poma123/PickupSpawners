@@ -3,6 +3,7 @@ package me.poma123.spawners;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.bukkit.Bukkit;
@@ -17,6 +18,7 @@ public class Command extends JavaPlugin implements org.bukkit.event.Listener {
 	public static Material material;
 	public static List<String> entities = new ArrayList<String>();
 	public int ID = 62455;
+	private Metrics metrics;
 
 	public static String generateRandomString(int length) {
 
@@ -42,8 +44,20 @@ public class Command extends JavaPlugin implements org.bukkit.event.Listener {
 		getLogger().info("-+        Made with <3       +-");
 		getLogger().info("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-");
 
-		Metrics metrics = new Metrics(this);
-
+		
+		metrics = new Metrics(this);
+		
+		this.metrics.addCustomChart(new Metrics.SingleLineChart("spawners_broken", new Callable<Integer>() {
+			 @Override
+		        public Integer call() throws Exception {
+				 int c = Listener.breakedSpawners;
+			     
+			        return c;
+		      
+		            
+		        }
+		    }));
+	     
 		if (getVersion().contains("1_13")) {
 			material = Material.getMaterial("SPAWNER");
 			getLogger().info("1.13 native version detected. Configuring 1.13-1.13.2 compatibility...");
@@ -68,7 +82,7 @@ public class Command extends JavaPlugin implements org.bukkit.event.Listener {
 		s.setup(Command.getPlugin(Command.class));
 
 		if (s.getConfig().getBoolean("update-check")) {
-			Updater updater = new Updater(this, ID, this.getFile(), Updater.UpdateType.VERSION_CHECK, true);
+			new Updater(this, ID, this.getFile(), Updater.UpdateType.VERSION_CHECK, true);
 		}
 
 		if (s.getConfig().getConfigurationSection("item").getKeys(false).isEmpty()) {

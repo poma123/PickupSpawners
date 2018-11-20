@@ -33,7 +33,8 @@ public class Listener implements org.bukkit.event.Listener {
 	Map<String, Integer> limit = new TreeMap<String, Integer>();
 	SettingsManager sett = SettingsManager.getInstance();
 	private Plugin plugin = Command.getPlugin(Command.class);
-
+	public static int breakedSpawners = 0;
+	
 	private Material material = Command.material;
 
 	public static String getLang(Player p) {
@@ -183,6 +184,8 @@ public class Listener implements org.bukkit.event.Listener {
 
 				s.getWorld().dropItemNaturally(s.getLocation(), spawner);
 				e.getPlayer().sendMessage(Language.getReplacedLocale(e.getPlayer(), LocalePath.BREAK, "%type%", cs.getSpawnedType().name().toLowerCase()));
+				
+				breakedSpawners++;
 			//	e.getPlayer().sendMessage(lang.equals("hu")? "§7Kiütöttél egy §e" + cs.getSpawnedType().name().toLowerCase() + " §7spawnert!"						: "§7You have broken out one §e" + cs.getSpawnedType().name().toLowerCase() + "§7 spawner.");
 				if (!e.getPlayer().hasPermission("spawnerlimit.bypass")) {
 					if (limit.containsKey(e.getPlayer().getName())) {
