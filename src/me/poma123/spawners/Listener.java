@@ -146,7 +146,7 @@ public class Listener implements org.bukkit.event.Listener {
 						enchantments = enchantments + "(?=.*" + ench.split(":")[0].toUpperCase() + "]="
 								+ ench.split(":")[1] + ")";
 					} else {
-						enchantments = enchantments + "(?=.*" + ench.toUpperCase() + "]=1" + ")";
+						enchantments = enchantments + "(?=.*" + ench.toUpperCase() + "]=" + ")";
 					}
 				}
 
