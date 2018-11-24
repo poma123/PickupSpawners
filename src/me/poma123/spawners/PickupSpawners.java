@@ -184,8 +184,8 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
 			public String call() throws Exception {
 				String c = "N/A";
 				
-				if (s.getConfig().getConfigurationSection("items").getValues(true) != null) {
-					c = String.valueOf(s.getConfig().getConfigurationSection("items").getValues(true).size());
+				if (s.getConfig().getConfigurationSection("item").getValues(true) != null) {
+					c = String.valueOf(s.getConfig().getConfigurationSection("item").getValues(true).size());
 				}
 				
 				
