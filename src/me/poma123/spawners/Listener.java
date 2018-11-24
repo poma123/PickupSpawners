@@ -322,7 +322,7 @@ public class Listener implements org.bukkit.event.Listener {
 								swmeta.setDisplayName("§e" + spawnedType.toLowerCase() + " §7Spawner");
 
 								spawner.setItemMeta(swmeta);
-								if (PickupSpawners.vault != null) {
+								try {
 									Economy economy = PickupSpawners.vault.getEconomy();
 
 									if (economy.getBalance(p) >= price) {
@@ -333,7 +333,7 @@ public class Listener implements org.bukkit.event.Listener {
 										p.sendMessage(Language.getLocale(p, LocalePath.NO_ENOUGH_MONEY));
 									}
 
-								} else {
+								} catch (Exception ex) {
 									plugin.getLogger().warning(
 											"§cThere was an error when attempt to buy a spawner. Vault is not installed.");
 									p.sendMessage(

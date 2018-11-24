@@ -2,7 +2,7 @@ author: poma123
 main: me.poma123.spawners.PickupSpawners
 name: PickupSpawners
 api-version: 1.13
-version: 2.8.0
+version: 2.8.1
 softdepend: [Vault]
 
 permissions:

@@ -18,8 +18,8 @@ public class VaultAPI {
     public VaultAPI(Plugin plugin) {
         this.plugin = plugin;
         if (!setupEconomy()) {
-            plugin.getPluginLoader().disablePlugin(plugin);
-            plugin.getLogger().severe(String.format("[%s] - Disabled due to no Vault dependency found!", plugin.getDescription().getName()));
+            //plugin.getPluginLoader().disablePlugin(plugin);
+            plugin.getLogger().severe(String.format("[%s] - No Vault dependency found! The sign shops will not working!!!", plugin.getDescription().getName()));
         }
     }
 
