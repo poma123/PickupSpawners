@@ -16,6 +16,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import me.poma123.spawners.language.Language;
+import me.poma123.spawners.language.Language.LocalePath;
+
 public class PSCommand implements CommandExecutor, TabCompleter {
 
 	EntityType[] values = EntityType.values();
@@ -36,10 +39,23 @@ public class PSCommand implements CommandExecutor, TabCompleter {
 									+ "§7/pspawners §badditem §f- Adds spawner breaker item to the db\n"
 									+ "§7/pspawners §bremoveitem <breakerID> §f- Removes spawner breaker item from the db\n"
 									+ "§7/pspawners §bitemlist §f- Spawner breaker item list (with breakerID)");
+					((Player) sender).spigot().sendMessage(Listener.getHoverClick("§e[PickupSpawners] §b§l[How to make a spawner buy sign]", "§7======================"
+							+ "\n§b     Here is the syntax:\n"
+							+ "\n§7§o1st line:   §f[PickupSpawners]"
+							+ "\n§7§o2nd line:      §fB <price>"
+							+ "\n§7§o3rd line:    §f<entity type>"
+							+ "\n§7§o4th line:      §f<amount>"
+							+ "\n\n"
+							+ "§7Example:\n"
+							+ "     [PickupSpawners]\n"
+							+ "         B 500\n"
+							+ "         zombie\n"
+							+ "           2\n"
+							+ "§7======================", ""));
 				}
+				
 			} else {
-				sender.sendMessage(Listener.getLang((Player) sender).equalsIgnoreCase("hu") ? "§cEhhez nincs jogod."
-						: "§cYou do not have permission to perform this command.");
+				sender.sendMessage(Language.getLocale((Player) sender, LocalePath.NO_PERM));
 				return true;
 			}
 
@@ -50,9 +66,9 @@ public class PSCommand implements CommandExecutor, TabCompleter {
 						if (args.length >= 2) {
 
 							String spawnedType = args[1].toUpperCase();
-							try {
+							if (me.poma123.spawners.PickupSpawners.entities.contains(spawnedType.toLowerCase())) {
 								EntityType.valueOf(spawnedType);
-								ItemStack spawner = new ItemStack(me.poma123.spawners.Command.material, 1);
+								ItemStack spawner = new ItemStack(me.poma123.spawners.PickupSpawners.material, 1);
 								ItemMeta swmeta = spawner.getItemMeta();
 								// swmeta.setLocalizedName();
 								swmeta.setDisplayName("§e" + spawnedType.toLowerCase() + " §7Spawner");
@@ -61,11 +77,9 @@ public class PSCommand implements CommandExecutor, TabCompleter {
 
 								p.getInventory().addItem(spawner);
 
-								p.sendMessage(me.poma123.spawners.Listener.getLang(p).equals("hu")
-										? "§aKaptál egy §e" + spawnedType.toLowerCase() + " §aspawnert!"
-										: "§aGave one §e" + spawnedType.toLowerCase() + "§a spawner to you.");
+								p.sendMessage(Language.getReplacedLocale(p, LocalePath.GIVE, "%count% %type%", 1 + " " + spawnedType.toLowerCase()));
 
-							} catch (IllegalArgumentException e) {
+							} else {
 								p.sendMessage(me.poma123.spawners.Listener.getLang(p).equals("hu")
 										? "§cA megadott entitás típus nem létezik."
 										: "§cThis entity type is invalid.");
@@ -77,16 +91,14 @@ public class PSCommand implements CommandExecutor, TabCompleter {
 						}
 
 					} else {
-						sender.sendMessage(
-								Listener.getLang((Player) sender).equalsIgnoreCase("hu") ? "§cEhhez nincs jogod."
-										: "§cYou do not have permission to perform this command.");
+						sender.sendMessage(Language.getLocale(p, LocalePath.NO_PERM));
 					}
 				} else if (args[0].equalsIgnoreCase("additem")) {
 					if (sender.hasPermission("pickupspawners.additem")) {
 						if (!p.getInventory().getItemInMainHand().getType().equals(Material.AIR)) {
-							String random = "random" + me.poma123.spawners.Command.generateRandomString(7);
+							String random = "random" + me.poma123.spawners.PickupSpawners.generateRandomString(7);
 							if (sett.getConfig().get("item." + random) != null) {
-								random = "random" + me.poma123.spawners.Command.generateRandomString(7);
+								random = "random" + me.poma123.spawners.PickupSpawners.generateRandomString(7);
 							}
 							Material mat = p.getInventory().getItemInMainHand().getType();
 							List<String> enchants = new ArrayList<String>();
@@ -118,9 +130,7 @@ public class PSCommand implements CommandExecutor, TabCompleter {
 
 					} else {
 						sender.sendMessage(
-								Listener.getLang((Player) sender).equalsIgnoreCase("hu") ? "§cEhhez nincs jogod."
-
-										: "§cYou do not have permission to perform this command.");
+								Language.getLocale(p, LocalePath.NO_PERM));
 					}
 				} else if (args[0].equalsIgnoreCase("removeitem")) {
 					if (sender.hasPermission("pickupspawners.removeitem")) {
@@ -159,8 +169,7 @@ public class PSCommand implements CommandExecutor, TabCompleter {
 						}
 					} else {
 						sender.sendMessage(
-								Listener.getLang((Player) sender).equalsIgnoreCase("hu") ? "§cEhhez nincs jogod."
-										: "§cYou do not have permission to perform this command.");
+								Language.getLocale(p, LocalePath.NO_PERM));
 					}
 				} else if (args[0].equalsIgnoreCase("itemlist")) {
 					if (sender.hasPermission("pickupspawners.itemlist")) {
@@ -191,8 +200,7 @@ public class PSCommand implements CommandExecutor, TabCompleter {
 						sender.sendMessage("§8+-");
 					} else {
 						sender.sendMessage(
-								Listener.getLang((Player) sender).equalsIgnoreCase("hu") ? "§cEhhez nincs jogod."
-										: "§cYou do not have permission to perform this command.");
+								Language.getLocale(p, LocalePath.NO_PERM));
 					}
 				} else {
 					sender.sendMessage(
@@ -200,11 +208,25 @@ public class PSCommand implements CommandExecutor, TabCompleter {
 									+ "§7/pspawners §badditem §f- Adds spawner breaker item to the db\n"
 									+ "§7/pspawners §bremoveitem <breakerID> §f- Removes spawner breaker item from the db\n"
 									+ "§7/pspawners §bitemlist §f- Spawner breaker item list (with breakerID)");
+					((Player) sender).spigot().sendMessage(Listener.getHoverClick("§e[PickupSpawners] §b&l[How to make a spawner buy sign]", "§7======================"
+							+ "\n§b     Here is the syntax:\n"
+							+ "\n§7§o1st line:   §f[PickupSpawners]"
+							+ "\n§7§o2nd line:      §fB <price>"
+							+ "\n§7§o3rd line:    §f<entity type>"
+							+ "\n§7§o4th line:      §f<amount>"
+							+ "\n\n"
+							+ "§7Example:\n"
+							+ "     [PickupSpawners]\n"
+							+ "         B 500\n"
+							+ "         zombie\n"
+							+ "           2\n"
+							+ "§7======================", ""));
 				}
 			}
 		}
 		return true;
 	}
+	
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
@@ -237,7 +259,7 @@ public class PSCommand implements CommandExecutor, TabCompleter {
 				if (args.length == 2) {
 					if (args[0].equalsIgnoreCase("give")) {
 						ArrayList<String> names = new ArrayList<String>();
-						List<String> list = me.poma123.spawners.Command.entities;
+						List<String> list = me.poma123.spawners.PickupSpawners.entities;
 
 						if (!args[1].equals("")) {
 							for (String name : list) {

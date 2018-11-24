@@ -1,3 +1,7 @@
 break: §7You have broken out one §e%type%§7 spawner.
 place: §7You have placen one §e%type%§7 spawner.
 limit-reach: §cYou have reached the daily spawner break limit (%limit%).
+no-enough-money: §cYou do not have enough money!
+no-enough-space-inv: §cThere are not enough space in your inventory!
+give: '&aGave %count% &e%type%&a spawner to you.'
+no-perm: '&cYou do not have permission to perform this action.'
