@@ -1,3 +1,20 @@
+/*******************************************************************************
+* This file is part of PickupSpawners.
+*
+*     ASkyBlock is free software: you can redistribute it and/or modify
+*     it under the terms of the GNU General Public License as published by
+*     the Free Software Foundation, either version 3 of the License, or
+*     (at your option) any later version.
+*
+*     ASkyBlock is distributed in the hope that it will be useful,
+*     but WITHOUT ANY WARRANTY; without even the implied warranty of
+*     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*     GNU General Public License for more details.
+*
+*     You should have received a copy of the GNU General Public License
+*     along with PickupSpawners.  If not, see <http://www.gnu.org/licenses/>.
+*******************************************************************************/
+
 package me.poma123.spawners;
 
 import com.google.gson.JsonArray;
@@ -113,7 +130,7 @@ public class Updater {
 	 * Check if id of resource is valid
 	 *
 	 * @param link
-	 *            link of the resource
+	          link of the resource
 	 * @return true if id of resource is valid
 	 */
 	private boolean checkResource(String link) {
@@ -209,9 +226,9 @@ public class Updater {
 	 * Checks if plugin should be updated
 	 * 
 	 * @param newVersion
-	 *            remote version
+	 *         remote version
 	 * @param oldVersion
-	 *            current version
+	 *        current version
 	 */
 	private boolean shouldUpdate(String newVersion, String oldVersion) {
 		return !newVersion.equalsIgnoreCase(oldVersion);

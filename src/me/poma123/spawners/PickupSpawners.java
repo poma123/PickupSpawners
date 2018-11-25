@@ -1,3 +1,19 @@
+/*******************************************************************************
+  * This file is part of PickupSpawners.
+  *
+  *     ASkyBlock is free software: you can redistribute it and/or modify
+  *     it under the terms of the GNU General Public License as published by
+  *     the Free Software Foundation, either version 3 of the License, or
+  *     (at your option) any later version.
+  *
+  *     ASkyBlock is distributed in the hope that it will be useful,
+  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  *     GNU General Public License for more details.
+  *
+  *     You should have received a copy of the GNU General Public License
+  *     along with PickupSpawners.  If not, see <http://www.gnu.org/licenses/>.
+  *******************************************************************************/
 package me.poma123.spawners;
 
 import java.util.ArrayList;
@@ -17,6 +33,7 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
 
 	private static PickupSpawners instance;
 	public static boolean debug = false;
+
 	public PickupSpawners() {
 		instance = this;
 	}
@@ -68,9 +85,6 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
 		getLogger().info("-+        Made with <3       +-");
 		getLogger().info("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-");
 
-		
-		
-		
 		/*
 		 * Spawner material setting by version
 		 */
@@ -150,7 +164,7 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
 			s.getConfig().set("item.default.enchants", Arrays.asList("SILK_TOUCH"));
 			s.saveConfig();
 		}
-		
+
 		/*
 		 * Metrics setup
 		 */
@@ -173,7 +187,6 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
 				} else {
 					c = "not using";
 				}
-				
 
 				return c;
 
@@ -183,12 +196,10 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
 			@Override
 			public String call() throws Exception {
 				String c = "N/A";
-				
+
 				if (s.getConfig().getConfigurationSection("item").getValues(true) != null) {
 					c = String.valueOf(s.getConfig().getConfigurationSection("item").getValues(true).size());
 				}
-				
-				
 
 				return c;
 
@@ -214,8 +225,6 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
 		}
 		return true;
 	}
-
-
 
 	private String getVersion() {
 		return Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
