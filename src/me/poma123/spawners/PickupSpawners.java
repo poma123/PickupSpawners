@@ -29,6 +29,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.poma123.spawners.language.Language;
+import net.md_5.bungee.api.ChatColor;
 
 public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Listener {
 
@@ -106,17 +107,36 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
 		for (EntityType entity : EntityType.values()) {
 
 			if (getVersion().contains("1_13_R")) {
-				if (Material.getMaterial(entity.toString().toUpperCase() + "_SPAWN_EGG") != null) {
+				if (entity.toString().toLowerCase().equals("pig_zombie")) {
+					if (debug) {
+						getLogger().info("[Debug] " + ChatColor.GREEN + entity.toString() + " added to the entities list.");
+					}
 					entities.add(entity.toString().toLowerCase());
+					
+				} else if (Material.getMaterial(entity.toString().toUpperCase() + "_SPAWN_EGG") != null) {
+					if (debug) {
+						getLogger().info("[Debug] " + ChatColor.GREEN + entity.toString() + " added to the entities list.");
+					}
+					entities.add(entity.toString().toLowerCase());
+				} else {
+					if (debug) {
+						getLogger().info("[Debug] " + ChatColor.RED + entity.toString() + " NOT added to the entities list.");
+					}
 				}
 
 			} else {
 				String list = "ELDER_GUARDIAN,WITHER_SKELETON,STRAY,HUSK,ZOMBIE_VILLAGER,SKELETON_HORSE,ZOMBIE_HORSE,DONKEY,MULE,EVOKER,VEX,VINDICATOR,CREEPER,SKELETON,SPIDER,"
-						+ "ZOMBIE,SLIME,GHAST,ZOMBIE_PIGMAN,ENDERMAN,CAVE_SPIDER,SILVERFISH,BLAZE,MAGMA_CUBE,BAT,WITCH,ENDERMITE,GUARDIAN,SHULKER,PIG,SHEEP,COW,CHICKEN,SQUID,"
+						+ "ZOMBIE,SLIME,GHAST,ZOMBIE_PIGMAN,PIG_ZOMBIE,ENDERMAN,CAVE_SPIDER,SILVERFISH,BLAZE,MAGMA_CUBE,BAT,WITCH,ENDERMITE,GUARDIAN,SHULKER,PIG,SHEEP,COW,CHICKEN,SQUID,"
 						+ "WOLF,MOOSHROOM,OCELOT,HORSE,RABBIT,POLAR_BEAR,LLAMA,PARROT,VILLAGER,TURTLE,PHANTOM,COD,SALMON,PUFFERFISH,TROPICAL_FISH,DROWNED,DOLPHIN";
 				if (list.contains(entity.toString().toUpperCase())) {
-
+					if (debug) {
+						getLogger().info("[Debug] " + ChatColor.GREEN + entity.toString() + " added to the entities list.");
+					}
 					entities.add(entity.toString().toLowerCase());
+				} else {
+					if (debug) {
+						getLogger().info("[Debug] " + ChatColor.RED + entity.toString() + " NOT added to the entities list.");
+					}
 				}
 
 			}
