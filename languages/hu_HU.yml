@@ -1,7 +1,0 @@
-break: §7Kiütöttél egy §e%type%§7 spawnert.
-place: §7Letettél egy §e%type%§7 spawnert.
-limit-reach: §cElérted a napi kiüthető spawner limitet (%limit%).
-no-enough-money: §cNincs elég pénzed!
-no-enough-space-inv: §cNincs elég hely a táskádban!
-give: '&aKaptál %count% &e%type%&a spawnert.'
-no-perm: '&cEhhez nincs jogod.'

@@ -1,0 +1,24 @@
+name: PickupSpawners
+version: 2.9-pre1
+main: me.poma123.spawners.PickupSpawners
+api-version: 1.13
+softdepend: [Vault]
+permissions:
+  spawnerlimit.bypass:
+    default: op
+  pickupspawners.give:
+    default: op
+  pickupspawners.additem:
+    default: op
+  pickupspawners.removeitem:
+    default: op
+  pickupspawners.itemlist:
+    default: op
+  pickupspawners.signshop.use:
+    default: true
+  pickupspawners.signshop.create:
+    default: op
+commands:
+  pickupspawners:
+    usage: /<command>
+    aliases: [spawners, pspawners, pickups]
