@@ -19,6 +19,7 @@ package me.poma123.spawners.language;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -35,8 +36,17 @@ public class Language {
 	private static Plugin plugin = PickupSpawners.getPlugin(PickupSpawners.class);
 
 	public enum LocalePath {
-		BREAK("break"), PLACE("place"), LIMIT_REACH("limit-reach"), NO_ENOUGH_MONEY(
-				"no-enough-money"), NO_ENOUGH_SPACE_INV("no-enough-space-inv"), NO_PERM("no-perm"), GIVE("give");
+		BREAK("break"),
+		PLACE("place"),
+		LIMIT_REACH("limit-reach"),
+		NO_ENOUGH_MONEY("no-enough-money"),
+		NO_ENOUGH_SPACE_INV("no-enough-space-inv"),
+		NO_PERM("no-perm"),
+		GIVE("give"),
+		CHANGE_SUCCESFUL("change-succesful"),
+		CHANGE_ERROR("change-error"),
+		CHANGE_ERROR_NOT_SPAWNER("change-error-not-spawner"),
+		CHANGE_ERROR_DISABLED_TYPE("change-error-disabled-type");
 
 		private final String name;
 
@@ -51,6 +61,9 @@ public class Language {
 		}
 
 		public String toString() {
+			return this.name;
+		}
+		public String getPath() {
 			return this.name;
 		}
 	}
@@ -73,14 +86,17 @@ public class Language {
 		}
 
 		FileConfiguration en = YamlConfiguration.loadConfiguration(enFile);
-		en.addDefault("break", "&7You have broken out one &e%type%&7 spawner.");
-		en.addDefault("place", "&7You have placen one &e%type%&7 spawner.");
-		en.addDefault("limit-reach", "&cYou have reached the daily spawner break limit (%limit%).");
-		en.addDefault("no-enough-money", "&cYou do not have enough money!");
+		en.addDefault(LocalePath.BREAK.getPath(), "&7You have broken out one &e%type%&7 spawner.");
+		en.addDefault(LocalePath.PLACE.getPath(), "&7You have placen one &e%type%&7 spawner.");
+		en.addDefault(LocalePath.LIMIT_REACH.getPath(), "&cYou have reached the daily spawner break limit (%limit%).");
+		en.addDefault(LocalePath.NO_ENOUGH_MONEY.getPath(), "&cYou do not have enough money!");
 		en.addDefault("no-enough-space-inv", "&cThere are not enough space in your inventory!");
 		en.addDefault("give", "&aGave %count% &e%type%&a spawner to you.");
 		en.addDefault("no-perm", "&cYou do not have permission to perform this action.");
-
+		en.addDefault("change-succesful", "§7Spawner succesfully changed from §e%type_from%§7 to §e%type_to%§7.");
+		en.addDefault("change-error", "§cThere was an error while changing a spawner from §e%type_from%§7 to §e%type_to%§7.");
+		en.addDefault(LocalePath.CHANGE_ERROR_NOT_SPAWNER.getPath(), "§cYou're not looking at a spawner, or is too far away.");
+		en.addDefault(LocalePath.CHANGE_ERROR_DISABLED_TYPE.getPath(), "§cYou can't change this spawner, because the type is disabled.");
 		en.options().copyDefaults(true);
 
 		try {
@@ -107,6 +123,10 @@ public class Language {
 		hu.addDefault("no-enough-space-inv", "&cNincs elég hely a táskádban!");
 		hu.addDefault("give", "&aKaptál %count% &e%type%&a spawnert.");
 		hu.addDefault("no-perm", "&cEhhez nincs jogod.");
+		hu.addDefault(LocalePath.CHANGE_SUCCESFUL.getPath(), "§7Spawner sikeresen átváltoztatva §e%type_from%§7 ->> §e%type_to%§7.");
+		hu.addDefault(LocalePath.CHANGE_ERROR.getPath(), "§cHiba történt a spawner átváltoztatása közben §e%type_from%§7 típusról §e%type_to%§7 típusra.");
+		hu.addDefault(LocalePath.CHANGE_ERROR_NOT_SPAWNER.getPath(), "§cNem egy spawnerre nézel vagy túl messze van.");
+		hu.addDefault(LocalePath.CHANGE_ERROR_DISABLED_TYPE.getPath(), "§cNem változtathatod a spawnert, mert a típus le van tiltva.");
 		hu.options().copyDefaults(true);
 		try {
 			hu.save(huFile);

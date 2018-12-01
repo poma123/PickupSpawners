@@ -18,6 +18,10 @@ permissions:
     default: true
   pickupspawners.signshop.create:
     default: op
+  pickupspawners.gui:
+    default: op
+  pickupspawners.change:
+    default: op
 commands:
   pickupspawners:
     usage: /<command>

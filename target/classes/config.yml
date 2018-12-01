@@ -18,5 +18,5 @@ locale: 'en_US'
 item: {}
 
 spawner-change:
-  disabledTypes:
+  disabledTypes: []
 #    - 'VILLAGER'

@@ -155,8 +155,10 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
         /*
          * Command registering
          */
+
         getCommand("pickupspawners").setExecutor(new PSCommand());
         getCommand("pickupspawners").setTabCompleter(new PSCommand());
+
         /*
          * Listener registering
          */
@@ -218,8 +220,8 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
             public String call() throws Exception {
                 String c = "N/A";
 
-                if (s.getConfig().getConfigurationSection("item").getValues(true) != null) {
-                    c = String.valueOf(s.getConfig().getConfigurationSection("item").getValues(true).size());
+                if (s.getConfig().getConfigurationSection("item").getValues(false) != null) {
+                    c = String.valueOf(s.getConfig().getConfigurationSection("item").getValues(false).size());
                 }
 
                 return c;
