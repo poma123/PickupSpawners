@@ -20,6 +20,7 @@ package me.poma123.spawners;
 import me.poma123.spawners.gui.PickupGui;
 import me.poma123.spawners.language.Language;
 import me.poma123.spawners.language.Language.LocalePath;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
@@ -33,10 +34,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class PSCommand implements CommandExecutor, TabCompleter {
     PickupSpawners ps = PickupSpawners.getInstance();
@@ -47,10 +45,14 @@ public class PSCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(
                 "§e[PickupSpawners] §7Commands:\n§7/pspawners §bgive <entity_name> §f- Gives you one spawner\n"
                         + "§7/pspawners §badditem §f- Adds spawner breaker item to the db\n"
+                        + "§7/pspawners §bupdateitem <breakerID> §f- Change an item breaker item to a new item\n"
                         + "§7/pspawners §bremoveitem <breakerID> §f- Removes spawner breaker item from the db\n"
-                        + "§7/pspawners §bitemlist §f- Spawner breaker item list (with breakerID)\n" +
-                        "§7/pspawners §bgui §f- Open the rich PickupSpawners GUI\n" +
-                        "§7/pspawners §bchange <type>§f- Change spawner type");
+                        + "§7/pspawners §bitemlist §f- Spawner breaker item list (with breakerID)\n"
+                        + "§7/pspawners §bsetitempermission <breakerID> <permission> §f- Set a permission for an item\n"
+                        + "§7/pspawners §bremoveitempermission <breakerID> §f- Remove an item's permission\n"
+                        + "§7/pspawners §bitemlist §f- Spawner breaker item list (with breakerID)\n"
+                        + "§7/pspawners §bgui §f- Open the rich PickupSpawners GUI\n"
+                        + "§7/pspawners §bchange <type>§f- Change spawner type");
         ((Player) sender).spigot().sendMessage(Listener.getHoverClick("§e[PickupSpawners] §b§l[How to make a spawner buy sign]", "§7======================"
                 + "\n§b     Here is the syntax:\n"
                 + "\n§7§o1st line:   §f[PickupSpawners]"
@@ -96,6 +98,63 @@ public class PSCommand implements CommandExecutor, TabCompleter {
                         return true;
                     }
 
+                } else if (args[0].equalsIgnoreCase("setitempermission")) {
+
+                    if (sender.hasPermission("pickupspawners.setitempermission")) {
+                        if (args.length > 2) {
+                            if (sett.getConfig().get("item." + args[1]) != null) {
+
+
+                                String perm = ChatColor.stripColor(args[2].toLowerCase());
+                                sett.getConfig().set("item." + args[1] + ".permission", null);
+                                sett.getConfig().set("item." + args[1] + ".permission", perm);
+                                sett.saveConfig();
+                                sender.sendMessage(Listener.getLang((Player) sender).equalsIgnoreCase("hu")
+                                        ? "§aKész! " + args[1] + " tárgy jogosultsága beállítva: " + perm
+                                        : "§aDone! " + args[1] + " item's permission succesfully set: " + perm);
+
+
+                            } else {
+                                sender.sendMessage(Listener.getLang((Player) sender).equalsIgnoreCase("hu")
+                                        ? "§cEz nem található az adatbázisban."
+                                        : "§cThis is not in the database.");
+                            }
+                        } else {
+                            sender.sendMessage("§e[PickupSpawners] §7Usage:\n§7/pspawners §bsetitempermission <breakerID> <permission>");
+
+                        }
+
+                    } else {
+                        sender.sendMessage(Language.getLocale(p, LocalePath.NO_PERM));
+                    }
+                } else if (args[0].equalsIgnoreCase("removeitempermission")) {
+
+                    if (sender.hasPermission("pickupspawners.removeitempermission")) {
+                        if (args.length > 1) {
+                            if (sett.getConfig().get("item." + args[1] + ".permission") != null) {
+
+
+
+                                sett.getConfig().set("item." + args[1] + ".permission", null);
+                                sett.saveConfig();
+                                sender.sendMessage(Listener.getLang((Player) sender).equalsIgnoreCase("hu")
+                                        ? "§aKész! " + args[1] + " tárgy jogosultsága eltávolítva: "
+                                        : "§aDone! " + args[1] + " item's permission removed.");
+
+
+                            } else {
+                                sender.sendMessage(Listener.getLang((Player) sender).equalsIgnoreCase("hu")
+                                        ? "§cEz nem található az adatbázisban."
+                                        : "§cThis is not in the database.");
+                            }
+                        } else {
+                            sender.sendMessage("§e[PickupSpawners] §7Usage:\n§7/pspawners §bremoveitempermission <breakerID>");
+
+                        }
+
+                    } else {
+                        sender.sendMessage(Language.getLocale(p, LocalePath.NO_PERM));
+                    }
                 } else if (args[0].equalsIgnoreCase("change")) {
                     if (sender.hasPermission("pickupspawners.change")) {
                         if (args.length > 1) {
@@ -112,8 +171,14 @@ public class PSCommand implements CommandExecutor, TabCompleter {
                             if (localEntities.contains(args[1].toLowerCase())) {
 
 
+                                Block b = null;
 
-                                Block b = player.getTargetBlock(5);
+                                if (ps.isOnePointThirteen) {
+                                    b = player.getTargetBlock(5);
+                                } else {
+                                    b = player.getTargetBlock((HashSet<Material>) null, 5);
+                                }
+
 
                                 if (b != null) {
                                     if (b.getType().equals(ps.material)) {
@@ -154,6 +219,10 @@ public class PSCommand implements CommandExecutor, TabCompleter {
                             sendHelp(sender);
 
                         }
+
+
+                    } else {
+                        sender.sendMessage(Language.getLocale(p, LocalePath.NO_PERM));
                     }
 
                 } else if (args[0].equalsIgnoreCase("give")) {
@@ -188,6 +257,48 @@ public class PSCommand implements CommandExecutor, TabCompleter {
                     } else {
                         sender.sendMessage(Language.getLocale(p, LocalePath.NO_PERM));
                     }
+                } else if (args[0].equalsIgnoreCase("updateitem")) {
+                    if (args.length > 1) {
+                        if (sender.hasPermission("pickupspawners.updateitem")) {
+                            if (sett.getConfig().get("item." + args[1]) != null) {
+                                if (!p.getInventory().getItemInMainHand().getType().equals(Material.AIR)) {
+                                    String random = args[1];
+                                    sett.getConfig().set("item." + random, null);
+
+                                    Material mat = p.getInventory().getItemInMainHand().getType();
+                                    List<String> enchants = new ArrayList<String>();
+                                    if (!p.getInventory().getItemInMainHand().getEnchantments().isEmpty()) {
+                                        for (Enchantment e : p.getInventory().getItemInMainHand().getEnchantments().keySet()) {
+                                            String s = e.getName();
+                                            int value = p.getInventory().getItemInMainHand().getEnchantments().get(e);
+                                            enchants.add(s + ":" + value);
+                                        }
+
+                                        sett.getConfig().set("item." + random + ".enchants", enchants);
+                                    }
+                                    sett.getConfig().set("item." + random + ".material", mat.toString());
+                                    sett.saveConfig();
+                                    sender.sendMessage(Listener.getLang((Player) sender).equalsIgnoreCase("hu")
+                                            ? "§aKész! " + args[1] + " sikeresen frissítve!"
+                                            : "§aDone! " + args[1] + " updated succesfully!");
+
+
+                                } else {
+                                    sender.sendMessage(Listener.getLang((Player) sender).equalsIgnoreCase("hu")
+                                            ? "§cNincs semmi a kezedben a beállításhoz."
+                                            : "§cYou have nothing in your hand.");
+                                }
+                            } else {
+                                sender.sendMessage(Listener.getLang((Player) sender).equalsIgnoreCase("hu")
+                                        ? "§cEz nem található az adatbázisban."
+                                        : "§cThis is not in the database.");
+                            }
+                        } else {
+                            sender.sendMessage(Language.getLocale(p, LocalePath.NO_PERM));
+                        }
+                    } else {
+                        sender.sendMessage("§e[PickupSpawners] §7Usage:\n§7/pspawners §bupdateitem <breakerID>");
+                    }
                 } else if (args[0].equalsIgnoreCase("additem")) {
                     if (sender.hasPermission("pickupspawners.additem")) {
                         if (!p.getInventory().getItemInMainHand().getType().equals(Material.AIR)) {
@@ -220,7 +331,7 @@ public class PSCommand implements CommandExecutor, TabCompleter {
                         } else {
                             sender.sendMessage(Listener.getLang((Player) sender).equalsIgnoreCase("hu")
                                     ? "§cNincs semmi a kezedben a beállításhoz."
-                                    : "§cYou have nothing in your hand for add a new spawner breaker item to the database.");
+                                    : "§cYou have nothing in your hand.");
                         }
 
                     } else {
@@ -313,7 +424,7 @@ public class PSCommand implements CommandExecutor, TabCompleter {
 
                 if (args.length == 1) {
                     ArrayList<String> names = new ArrayList<String>();
-                    List<String> list = Arrays.asList("give", "additem", "removeitem", "itemlist", "gui", "change");
+                    List<String> list = Arrays.asList("give", "additem", "removeitem", "itemlist", "gui", "change", "updateitem", "setitempermission", "removeitempermission");
 
                     if (!args[0].equals("")) {
                         for (String name : list) {
@@ -337,6 +448,32 @@ public class PSCommand implements CommandExecutor, TabCompleter {
                     if (args[0].equalsIgnoreCase("give")) {
                         ArrayList<String> names = new ArrayList<String>();
                         List<String> list = me.poma123.spawners.PickupSpawners.entities;
+
+                        if (!args[1].equals("")) {
+                            for (String name : list) {
+                                if (name.toLowerCase().startsWith(args[1].toLowerCase())) {
+                                    names.add(name);
+                                }
+
+                            }
+                        } else {
+                            for (String name : list) {
+                                names.add(name);
+                            }
+                        }
+
+                        Collections.sort(names);
+
+                        return names;
+                    }
+                    if (args[0].equalsIgnoreCase("updateitem") || args[0].equalsIgnoreCase("removeitem") || args[0].equalsIgnoreCase("removeitempermission")
+                            || args[0].equalsIgnoreCase("setitempermission")) {
+                        ArrayList<String> names = new ArrayList<String>();
+                        List<String> list = new ArrayList<>();
+                        for (String str : sett.getConfig().getConfigurationSection("item").getKeys(false)) {
+                            list.add(str);
+                        }
+
 
                         if (!args[1].equals("")) {
                             for (String name : list) {

@@ -1,5 +1,5 @@
 name: PickupSpawners
-version: 2.9-pre2
+version: 2.9.0
 main: me.poma123.spawners.PickupSpawners
 api-version: 1.13
 softdepend: [Vault]
@@ -21,6 +21,12 @@ permissions:
   pickupspawners.gui:
     default: op
   pickupspawners.change:
+    default: op
+  pspawners.updateitem:
+    default: op
+  pspawners.setitempermission:
+    default: op
+  pspawners.removeitempermission:
     default: op
 commands:
   pickupspawners:

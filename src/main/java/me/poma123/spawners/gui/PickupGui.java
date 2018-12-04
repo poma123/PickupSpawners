@@ -26,15 +26,19 @@ public class PickupGui implements Listener {
 
     public void mainSpawnersGui(Player p) {
 
+
         Inventory inv = ps.getServer().createInventory(null, 27, "§1PickupSpawners Main Page");
+
 
         ItemStack give = GuiItem.getGuiItem(getSpawnegg("CREEPER").getType(), 1, "§6§lGive spawners",
                 Arrays.asList("§7You can easily get", "§7a spawner by clicking to a", "§7spawn egg of a mob!"));
 
         ItemStack breaker = GuiItem.getGuiItem(Material.DIAMOND_PICKAXE, 1, "§c§lBreaker items",
-                Arrays.asList("§7Create, check, edit, remove spawner breaker items!"));
-        inv.setItem(13, breaker);
-        inv.setItem(11, give);
+                Arrays.asList("§7Check, edit and remove spawner breaker items!"));
+
+
+        inv.setItem(14, breaker);
+        inv.setItem(12, give);
         p.openInventory(inv);
 
     }
@@ -50,6 +54,7 @@ public class PickupGui implements Listener {
         for (String path : s.getConfig().getConfigurationSection("item").getKeys(false)) {
             Material matt;
             ItemStack localItemStack;
+            boolean isPerm = SettingsManager.getInstance().getConfig().get("item." + path + ".permission") != null;
             try {
 
                 matt = Material.getMaterial(SettingsManager.getInstance().getConfig().getString("item." + path + ".material"));
@@ -67,6 +72,11 @@ public class PickupGui implements Listener {
 
                     }
                     lore.add("");
+                    if (isPerm) {
+                        lore.add("§3Permission: " + SettingsManager.getInstance().getConfig().get("item." + path + ".permission"));
+
+                    }
+
                     lore.add("§eBreakerID: " + path);
                     meta.setLore(lore);
                     meta.addEnchant(Enchantment.getByName("SILK_TOUCH"), 1, true);
@@ -81,7 +91,11 @@ public class PickupGui implements Listener {
                     ItemMeta meta = localItemStack.getItemMeta();
                     List<String> lore = new ArrayList<String>();
 
+                    lore.add("");
+                    if (isPerm) {
+                        lore.add("§3Permission: " + SettingsManager.getInstance().getConfig().get("item." + path + ".permission"));
 
+                    }
                     lore.add("§eBreakerID: " + path);
 
                     //   meta.setLore(Arrays.asList(s.getConfig().getStringList("item." + path + ".enchants") + "\n§eBreakerID: " + path));
@@ -113,6 +127,12 @@ public class PickupGui implements Listener {
                     }
                     meta.addEnchant(Enchantment.getByName("SILK_TOUCH"), 1, true);
                     meta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DESTROYS);
+                    lore.add("");
+                    if (isPerm) {
+                        lore.add("§3Permission: " + SettingsManager.getInstance().getConfig().get("item." + path + ".permission"));
+
+                    }
+
                     lore.add("§eBreakerID: " + path);
 
                     localItemStack.setItemMeta(meta);
@@ -120,9 +140,16 @@ public class PickupGui implements Listener {
 
                 } else {
                     ItemMeta meta = localItemStack.getItemMeta();
+                    List<String> lore = new ArrayList<String>();
+                    lore.add("");
+                    if (isPerm) {
+                        lore.add("§3Permission: " + SettingsManager.getInstance().getConfig().get("item." + path + ".permission"));
 
+                    }
+                    lore.add("§cInvalid material!");
+                    lore.add("§eBreakerID: " + path);
 
-                    meta.setLore(Arrays.asList("§cInvalid material!", "§eBreakerID: " + path));
+                    meta.setLore(lore);
                     localItemStack.setItemMeta(meta);
                 }
 
@@ -267,7 +294,7 @@ public class PickupGui implements Listener {
 
     public ItemStack getSpawnegg(String type) {
 
-        if (ps.getVersion().contains("1_13_R")) {
+        if (ps.isOnePointThirteen) {
             if (type.equalsIgnoreCase("PIG_ZOMBIE")) {
                 return new ItemStack(Material.ZOMBIE_PIGMAN_SPAWN_EGG, 1);
             } else {

@@ -50,6 +50,7 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
     public int ID = 62455;
     private Metrics metrics;
     static VaultAPI vault;
+    public static boolean isOnePointThirteen = false;
 
     public static String generateRandomString(int length) {
 
@@ -111,6 +112,7 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
                     if (debug) {
                         getLogger().info("[Debug] " + ChatColor.GREEN + entity.toString() + " added to the entities list.");
                     }
+                    isOnePointThirteen = true;
                     entities.add(entity.toString().toLowerCase());
 
                 } else if (Material.getMaterial(entity.toString().toUpperCase() + "_SPAWN_EGG") != null) {

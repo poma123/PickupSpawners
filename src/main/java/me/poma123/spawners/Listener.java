@@ -20,6 +20,7 @@ package me.poma123.spawners;
 import me.poma123.spawners.gui.PickupGui;
 import me.poma123.spawners.language.Language;
 import me.poma123.spawners.language.Language.LocalePath;
+import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -75,6 +76,15 @@ public class Listener implements org.bukkit.event.Listener {
         TextComponent text = new TextComponent(message);
         text.setClickEvent(
                 new net.md_5.bungee.api.chat.ClickEvent(net.md_5.bungee.api.chat.ClickEvent.Action.OPEN_URL, click));
+        text.setHoverEvent(new net.md_5.bungee.api.chat.HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                new ComponentBuilder(hover).create()));
+        return text;
+    }
+
+    public static TextComponent getHoverSuggest(String message, String hover, String suggestedcommand) {
+        TextComponent text = new TextComponent(message);
+        text.setClickEvent(
+                new net.md_5.bungee.api.chat.ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, ChatColor.stripColor(suggestedcommand)));
         text.setHoverEvent(new net.md_5.bungee.api.chat.HoverEvent(HoverEvent.Action.SHOW_TEXT,
                 new ComponentBuilder(hover).create()));
         return text;
@@ -139,10 +149,17 @@ public class Listener implements org.bukkit.event.Listener {
             if ((items == null) || (!items.hasItemMeta())) {
                 return;
             }
+
+
+            if (items.getItemMeta().getLore().toString().contains("BreakerID")) {
+
+                String str = ChatColor.stripColor(items.getItemMeta().getLore().get(items.getItemMeta().getLore().size()-1)).replace("BreakerID: ", "");
+                player.closeInventory();
+                sendBreakerItemCommands(player, str);
+            }
             if (!items.getItemMeta().hasDisplayName()) {
                 return;
             }
-
             if (items.getItemMeta().getDisplayName().contains("Back")) {
 
                 PickupGui gui = new PickupGui();
@@ -243,6 +260,23 @@ public class Listener implements org.bukkit.event.Listener {
         }
     }
 
+    /**
+     *
+     * @param player
+     * @param breakerID
+     */
+    private void sendBreakerItemCommands(Player player, String breakerID) {
+        player.sendMessage("§b#------------§6PickupSpawners§b------------#\n\n§cBreaker item commands:\n ");
+        player.spigot().sendMessage(getHoverSuggest("§e [*] §6Edit item §8§o(Click here)", "§7/pspawners §bupdateitem " + breakerID, "/pspawners updateitem " + breakerID));
+        player.spigot().sendMessage(getHoverSuggest("§e [*] §3Set permission §8§o(Click here)", "§7/pspawners §bsetitempermission " + breakerID + " <permission>", "/pspawners setitempermission " + breakerID + " <permission>"));
+        if (sett.getConfig().get("item." + breakerID + ".permission") != null) {
+            player.spigot().sendMessage(getHoverSuggest("§c [-] Remove permission §8§o(Click here)", "§7/pspawners §bremoveitempermission " + breakerID , "/pspawners removeitempermission " + breakerID));
+        }
+        player.spigot().sendMessage(getHoverSuggest("§c [-] Remove item §8§o(Click here)", "§7/pspawners §bremoveitem " + breakerID, "/pspawners removeitem " + breakerID));
+
+                player.sendMessage("\n\n§b#-------------------------------------#\n");
+    }
+
 
     @EventHandler
     public void onOpJoin(PlayerJoinEvent e) {
@@ -315,7 +349,18 @@ public class Listener implements org.bukkit.event.Listener {
 
             if (enchants.isEmpty()) {
                 if (item.getType().equals(mat)) {
-                    isGoodItem = true;
+                    if (sett.getConfig().get("item." + string + ".permission") != null) {
+                        if (e.getPlayer().hasPermission(sett.getConfig().getString("item." + string + ".permission"))) {
+                            isGoodItem = true;
+                        } else {
+                            isGoodItem = false;
+                            e.setCancelled(true);
+                            e.getPlayer().sendMessage(Language.getLocale(e.getPlayer(), LocalePath.NO_PERM));
+                            break;
+                        }
+                    } else {
+                        isGoodItem = true;
+                    }
                 }
             } else {
 
@@ -339,7 +384,18 @@ public class Listener implements org.bukkit.event.Listener {
                 }
 
                 if (item.getType().equals(mat) && containsAllEnchants) {
-                    isGoodItem = true;
+                    if (sett.getConfig().get("item." + string + ".permission") != null) {
+                        if (e.getPlayer().hasPermission(sett.getConfig().getString("item." + string + ".permission"))) {
+                            isGoodItem = true;
+                        } else {
+                            isGoodItem = false;
+                            e.setCancelled(true);
+                            e.getPlayer().sendMessage(Language.getLocale(e.getPlayer(), LocalePath.NO_PERM));
+                            break;
+                        }
+                    } else {
+                        isGoodItem = true;
+                    }
                 }
 
             }
