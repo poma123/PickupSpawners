@@ -22,11 +22,11 @@ permissions:
     default: op
   pickupspawners.change:
     default: op
-  pspawners.updateitem:
+  pickupspawners.updateitem:
     default: op
-  pspawners.setitempermission:
+  pickupspawners.setitempermission:
     default: op
-  pspawners.removeitempermission:
+  pickupspawners.removeitempermission:
     default: op
 commands:
   pickupspawners:
