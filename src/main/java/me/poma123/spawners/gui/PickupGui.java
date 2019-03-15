@@ -245,7 +245,13 @@ public class PickupGui implements Listener {
                     item.setItemMeta(itemMeta);
                     inv.setItem(listByPage.indexOf(s), item);
                 } else {
-                    ItemStack item = new ItemStack(Material.getMaterial(s.toUpperCase() + "_SPAWN_EGG"));
+                    ItemStack item;
+                    if (Material.getMaterial(s.toUpperCase() + "_SPAWN_EGG") == null) {
+                        item  = new ItemStack(Material.GHAST_SPAWN_EGG);
+                    } else {
+                        item =   new ItemStack(Material.getMaterial(s.toUpperCase() + "_SPAWN_EGG"));
+                    }
+
                     ItemMeta itemMeta = item.getItemMeta();
                     itemMeta.setDisplayName("§6§l" + s.replaceFirst("" + s.charAt(0), "" + Character.toUpperCase(s.charAt(0))));
                     item.setItemMeta(itemMeta);

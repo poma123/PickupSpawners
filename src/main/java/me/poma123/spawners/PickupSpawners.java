@@ -79,6 +79,7 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
         Language.saveLocales();
 
         /*
+
          * Just why not?
          */
         getLogger().info("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-");
@@ -105,6 +106,7 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
         /*
          * Getting and saving available entities
          */
+        String list1 = "ILLUSIONER, GIANT, ENDER_DRAGON, WITHER, MUSHROOM_COW, SNOWMAN, IRON_GOLEM";
         for (EntityType entity : EntityType.values()) {
 
             if (getVersion().contains("1_13_R")) {
@@ -115,7 +117,7 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
                     isOnePointThirteen = true;
                     entities.add(entity.toString().toLowerCase());
 
-                } else if (Material.getMaterial(entity.toString().toUpperCase() + "_SPAWN_EGG") != null) {
+                } else if (Material.getMaterial(entity.toString().toUpperCase() + "_SPAWN_EGG") != null || list1.contains(entity.toString().toUpperCase())) {
                     if (debug) {
                         getLogger().info("[Debug] " + ChatColor.GREEN + entity.toString() + " added to the entities list.");
                     }
@@ -125,7 +127,6 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
                         getLogger().info("[Debug] " + ChatColor.RED + entity.toString() + " NOT added to the entities list.");
                     }
                 }
-
             } else {
                 String list = "ELDER_GUARDIAN,WITHER_SKELETON,STRAY,HUSK,ZOMBIE_VILLAGER,SKELETON_HORSE,ZOMBIE_HORSE,DONKEY,MULE,EVOKER,VEX,VINDICATOR,CREEPER,SKELETON,SPIDER,"
                         + "ZOMBIE,SLIME,GHAST,ZOMBIE_PIGMAN,PIG_ZOMBIE,ENDERMAN,CAVE_SPIDER,SILVERFISH,BLAZE,MAGMA_CUBE,BAT,WITCH,ENDERMITE,GUARDIAN,SHULKER,PIG,SHEEP,COW,CHICKEN,SQUID,"
