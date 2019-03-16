@@ -17,26 +17,21 @@
 
 package me.poma123.spawners;
 
-import com.destroystokyo.paper.Namespaced;
-import com.google.common.collect.Multimap;
 import me.poma123.spawners.language.Language;
 import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang.RandomStringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.tags.CustomItemTagContainer;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Listener {
@@ -50,6 +45,7 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
     public int ID = 62455;
     SettingsManager s = SettingsManager.getInstance();
     private Metrics metrics;
+
     public PickupSpawners() {
         instance = this;
     }
@@ -158,7 +154,7 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
             } else {
                 String list = "ELDER_GUARDIAN,WITHER_SKELETON,STRAY,HUSK,ZOMBIE_VILLAGER,SKELETON_HORSE,ZOMBIE_HORSE,DONKEY,MULE,EVOKER,VEX,VINDICATOR,CREEPER,SKELETON,SPIDER,"
                         + "ZOMBIE,SLIME,GHAST,ZOMBIE_PIGMAN,PIG_ZOMBIE,ENDERMAN,CAVE_SPIDER,SILVERFISH,BLAZE,MAGMA_CUBE,BAT,WITCH,ENDERMITE,GUARDIAN,SHULKER,PIG,SHEEP,COW,CHICKEN,SQUID,"
-                        + "WOLF,MOOSHROOM,OCELOT,HORSE,RABBIT,POLAR_BEAR,LLAMA,PARROT,VILLAGER,TURTLE,PHANTOM,COD,SALMON,PUFFERFISH,TROPICAL_FISH,DROWNED,DOLPHIN";
+                        + "WOLF,MOOSHROOM,OCELOT,HORSE,RABBIT,POLAR_BEAR,LLAMA,PARROT,VILLAGER,TURTLE,PHANTOM,COD,SALMON,PUFFERFISH,TROPICAL_FISH,DROWNED,DOLPHIN,ILLUSIONER, GIANT, ENDER_DRAGON, WITHER, MUSHROOM_COW, SNOWMAN, IRON_GOLEM";
                 if (list.contains(entity.toString().toUpperCase())) {
                     if (debug) {
                         getLogger().info("[Debug] " + ChatColor.GREEN + entity.toString() + " added to the entities list.");
@@ -256,15 +252,15 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
                         continue;
                     }
                     ItemStack local = new ItemStack(Material.BEDROCK, 1);
-                    if (Material.getMaterial(mat) == null && XMaterial.fromString(mat)== null && Material.valueOf(mat) == null) {
-                       local= new ItemStack(Material.BEDROCK, 1);
+                    if (Material.getMaterial(mat) == null && XMaterial.fromString(mat) == null && Material.valueOf(mat) == null) {
+                        local = new ItemStack(Material.BEDROCK, 1);
                     } else {
                         if (Material.valueOf(mat) != null) {
-                            local= new ItemStack(Material.valueOf(mat));
-                        } else  if (Material.getMaterial(mat) != null) {
-                           local= new ItemStack(Material.getMaterial(mat));
+                            local = new ItemStack(Material.valueOf(mat));
+                        } else if (Material.getMaterial(mat) != null) {
+                            local = new ItemStack(Material.getMaterial(mat));
                         } else if (Material.getMaterial(XMaterial.fromString(mat).parseMaterial().toString()) != null) {
-                          local=  new ItemStack(Material.getMaterial(XMaterial.fromString(mat).parseMaterial().toString()));
+                            local = new ItemStack(Material.getMaterial(XMaterial.fromString(mat).parseMaterial().toString()));
                         }
                     }
 
@@ -301,8 +297,6 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
 
             }
             s.saveConfig();
-
-
 
 
         }
