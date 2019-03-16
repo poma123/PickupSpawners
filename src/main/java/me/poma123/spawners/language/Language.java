@@ -46,7 +46,8 @@ public class Language {
 		CHANGE_SUCCESFUL("change-succesful"),
 		CHANGE_ERROR("change-error"),
 		CHANGE_ERROR_NOT_SPAWNER("change-error-not-spawner"),
-		CHANGE_ERROR_DISABLED_TYPE("change-error-disabled-type");
+		CHANGE_ERROR_DISABLED_TYPE("change-error-disabled-type"),
+		CANNOT_PICKUP("cannot-pickup");
 
 		private final String name;
 
@@ -97,6 +98,7 @@ public class Language {
 		en.addDefault("change-error", "§cThere was an error while changing a spawner from §e%type_from%§7 to §e%type_to%§7.");
 		en.addDefault(LocalePath.CHANGE_ERROR_NOT_SPAWNER.getPath(), "§cYou're not looking at a spawner, or is too far away.");
 		en.addDefault(LocalePath.CHANGE_ERROR_DISABLED_TYPE.getPath(), "§cYou can't change this spawner, because the type is disabled.");
+		en.addDefault(LocalePath.CANNOT_PICKUP.getPath(),"§cYou can't pickup spawners with that item!");
 		en.options().copyDefaults(true);
 
 		try {
@@ -127,6 +129,7 @@ public class Language {
 		hu.addDefault(LocalePath.CHANGE_ERROR.getPath(), "§cHiba történt a spawner átváltoztatása közben §e%type_from%§7 típusról §e%type_to%§7 típusra.");
 		hu.addDefault(LocalePath.CHANGE_ERROR_NOT_SPAWNER.getPath(), "§cNem egy spawnerre nézel vagy túl messze van.");
 		hu.addDefault(LocalePath.CHANGE_ERROR_DISABLED_TYPE.getPath(), "§cNem változtathatod a spawnert, mert a típus le van tiltva.");
+		hu.addDefault(LocalePath.CANNOT_PICKUP.getPath(),"§cNem üthetsz ki spawnereket ezzel a tárggyal!");
 		hu.options().copyDefaults(true);
 		try {
 			hu.save(huFile);

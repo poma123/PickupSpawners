@@ -5,11 +5,33 @@
       <artifact name="PickupSpawners:jar" />
     </artifacts-to-build>
   </component>
+  <component name="BookmarkManager">
+    <bookmark url="file://$USER_HOME$/eclipse-workspace/PomaFriends/src/main/java/me/poma123/pomafriends/FriendGui.java" description="ItemStack localItemStack = GuiItem.getGuiSkullItem..." line="100" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="021dbdad-118f-4b77-ba3c-be5df6b6ab4c" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/poma123/spawners/XMaterial.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_destroystokyo_paper_paper_api_1_13_2_R0_1_SNAPSHOT.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_destroystokyo_paper_paper_api_1_13_2_R0_1_SNAPSHOT.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_md_5_bungeecord_chat_1_13_SNAPSHOT.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_md_5_bungeecord_chat_1_13_SNAPSHOT.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_milkbowl_vault_VaultAPI_1_7.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_bukkit_bukkit_1_13_1_R0_1_SNAPSHOT.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PickupSpawners.iml" beforeDir="false" afterPath="$PROJECT_DIR$/PickupSpawners.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dependency-reduced-pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/dependency-reduced-pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/poma123/spawners/Listener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/poma123/spawners/Listener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/poma123/spawners/PSCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/poma123/spawners/PSCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/poma123/spawners/PickupSpawners.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/poma123/spawners/PickupSpawners.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/poma123/spawners/gui/PickupGui.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/poma123/spawners/gui/PickupGui.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/poma123/spawners/language/Language.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/poma123/spawners/language/Language.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -21,37 +43,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/gui/PickupGui.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="43" column="5" selection-start-line="43" selection-start-column="5" selection-end-line="43" selection-end-column="5" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="method#spawnerGiveList#0;class#PickupGui#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="27" column="15" lean-forward="true" selection-start-line="27" selection-start-column="15" selection-end-line="27" selection-end-column="15" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/PickupSpawners.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="51" column="26" selection-start-line="51" selection-start-column="26" selection-end-line="51" selection-end-column="26" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
@@ -62,10 +53,42 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/Listener.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/PickupSpawners.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5695">
-              <caret line="384" selection-start-line="384" selection-end-line="384" />
+            <state relative-caret-position="646">
+              <caret line="332" column="10" selection-start-line="332" selection-start-column="10" selection-end-line="332" selection-end-column="10" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#2899#2900#0" expanded="true" />
+                <element signature="e#2990#2991#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="408">
+              <caret line="24" column="28" selection-start-line="24" selection-start-column="28" selection-end-line="24" selection-end-column="28" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/SettingsManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="275">
+              <caret line="27" column="16" selection-start-line="27" selection-start-column="16" selection-end-line="27" selection-end-column="16" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/PSCommand.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="355">
+              <caret line="450" lean-forward="true" selection-start-line="450" selection-end-line="450" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -74,37 +97,49 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/PSCommand.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="85" column="28" lean-forward="true" selection-start-line="85" selection-start-column="28" selection-end-line="85" selection-end-column="28" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/gui/Gui.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="22" selection-start-line="2" selection-start-column="22" selection-end-line="2" selection-end-column="22" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/language/Language.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1105">
-              <caret line="98" column="71" selection-start-line="98" selection-start-column="71" selection-end-line="98" selection-end-column="71" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/config.yml">
+        <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/Listener.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="340">
-              <caret line="20" column="19" selection-start-line="20" selection-start-column="19" selection-end-line="20" selection-end-column="19" />
+              <caret line="764" column="71" selection-start-line="764" selection-start-column="71" selection-end-line="764" selection-end-column="71" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/XMaterial.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="342">
+              <caret line="30" column="23" selection-start-line="30" selection-start-column="23" selection-end-line="30" selection-end-column="23" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/gui/PickupGui.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="321">
+              <caret line="81" column="71" lean-forward="true" selection-start-line="81" selection-start-column="71" selection-end-line="81" selection-end-column="71" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.idea/misc.xml">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.idea/encodings.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="6" column="10" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="10" />
             </state>
           </provider>
         </entry>
@@ -120,10 +155,40 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>System.</find>
-      <find>System.out</find>
       <find>BlockBre</find>
+      <find>checkRe</find>
+      <find>p.getInventory().getItemInMainHand()</find>
+      <find>fromMat</find>
+      <find>lang</find>
+      <find>setitem</find>
+      <find>random</find>
+      <find>Essentials</find>
+      <find>Type</find>
+      <find>Chat</find>
+      <find>Click</find>
+      <find>ComponentBuilder</find>
+      <find>Async</find>
+      <find>XMaterial</find>
+      <find>permission</find>
+      <find>deb</find>
+      <find>break</find>
+      <find>xmat</find>
+      <find>Breaker</find>
+      <find>default</find>
+      <find>getItemInMain</find>
+      <find>[ps]</find>
+      <find>ps</find>
+      <find>BEDROCK</find>
+      <find>Interact</find>
+      <find>Vault</find>
+      <find>System</find>
+      <find>PAPER</find>
+      <find>give</find>
+      <find>itemlist</find>
     </findStrings>
+    <replaceStrings>
+      <replace>itemstack</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -142,12 +207,15 @@
         <option value="$PROJECT_DIR$/src/main/java/me/poma123/spawners/gui/Skull.java" />
         <option value="$PROJECT_DIR$/dependency-reduced-pom.xml" />
         <option value="$PROJECT_DIR$/src/main/resources/config.yml" />
-        <option value="$PROJECT_DIR$/src/main/java/me/poma123/spawners/language/Language.java" />
-        <option value="$PROJECT_DIR$/src/main/java/me/poma123/spawners/PickupSpawners.java" />
-        <option value="$PROJECT_DIR$/src/main/java/me/poma123/spawners/PSCommand.java" />
-        <option value="$PROJECT_DIR$/src/main/java/me/poma123/spawners/Listener.java" />
-        <option value="$PROJECT_DIR$/src/main/java/me/poma123/spawners/gui/PickupGui.java" />
+        <option value="$PROJECT_DIR$/src/main/java/me/poma123/spawners/event/SpawnerPlaceEvent.java" />
+        <option value="$PROJECT_DIR$/src/main/java/me/poma123/spawners/event/SpawnerBreakEvent.java" />
         <option value="$PROJECT_DIR$/src/main/resources/plugin.yml" />
+        <option value="$PROJECT_DIR$/src/main/java/me/poma123/spawners/language/Language.java" />
+        <option value="$PROJECT_DIR$/src/main/java/me/poma123/spawners/XMaterial.java" />
+        <option value="$PROJECT_DIR$/src/main/java/me/poma123/spawners/Listener.java" />
+        <option value="$PROJECT_DIR$/src/main/java/me/poma123/spawners/PickupSpawners.java" />
+        <option value="$PROJECT_DIR$/src/main/java/me/poma123/spawners/gui/PickupGui.java" />
+        <option value="$PROJECT_DIR$/src/main/java/me/poma123/spawners/PSCommand.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
@@ -168,21 +236,26 @@
           <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
           <item name="PickupSpawners" type="9519ce18:MavenProjectsStructure$ProjectNode" />
         </path>
+        <path>
+          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
+          <item name="PickupSpawners" type="9519ce18:MavenProjectsStructure$ProjectNode" />
+          <item name="Dependencies" type="f4be9f2a:MavenProjectsStructure$DependenciesNode" />
+        </path>
       </expand>
       <select />
     </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1048" />
-    <option name="y" value="28" />
-    <option name="width" value="1400" />
-    <option name="height" value="1000" />
+    <option name="x" value="-7" />
+    <option name="width" value="974" />
+    <option name="height" value="1047" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -237,7 +310,6 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -245,12 +317,13 @@
     <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
     <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
     <property name="GenerateAntBuildDialog.outputFileNameProperty" value="pickupspawners" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1543950538381" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1552736661154" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="instant.run" />
+    <property name="settings.editor.selected.configurable" value="MavenSettings" />
   </component>
   <component name="RecentsManager">
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
@@ -287,6 +360,7 @@
               <list>
                 <option value="clean" />
                 <option value="package" />
+                <option value="-e" />
               </list>
             </option>
             <option name="pomFileName" />
@@ -327,7 +401,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.12953092" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20149253" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -335,21 +409,21 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49946696" weight="0.32936078" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49733475" weight="0.19176598" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49946696" weight="0.13542795" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49520257" visible="true" weight="0.20043337" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3997833" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32827735" />
-      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.4978678" weight="0.32936078" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5026652" side_tool="true" visible="true" weight="0.19176598" />
+      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49733475" weight="0.32936078" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50479746" side_tool="true" visible="true" weight="0.20043337" />
       <window_info anchor="bottom" id="Version Control" order="9" sideWeight="0.49946696" weight="0.32936078" />
       <window_info anchor="bottom" id="Messages" order="10" sideWeight="0.49946696" weight="0.30119178" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="right" id="Maven" order="4" visible="true" weight="0.12260128" />
+      <window_info anchor="right" id="Maven" order="4" visible="true" weight="0.21908316" />
       <window_info anchor="right" id="Theme Preview" order="5" />
       <window_info anchor="right" id="Capture Analysis" order="6" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
@@ -360,13 +434,13 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/Listener.java</url>
-          <line>104</line>
+          <line>112</line>
           <properties />
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/Listener.java</url>
-          <line>260</line>
+          <line>266</line>
           <properties />
           <option name="timeStamp" value="3" />
         </line-breakpoint>
@@ -404,20 +478,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/gui/SpawnersGui.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/SettingsManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="34" column="4" selection-start-line="34" selection-start-column="4" selection-end-line="34" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/gui/Reflections.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1513">
-          <caret line="96" column="12" selection-start-line="96" selection-start-column="12" selection-end-line="96" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_171/src.zip!/java/util/function/IntFunction.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="425">
@@ -425,39 +485,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/destroystokyo/paper/paper-api/1.13.2-R0.1-SNAPSHOT/paper-api-1.13.2-R0.1-20181128.042410-79-sources.jar!/org/bukkit/entity/EntityType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="238" column="40" lean-forward="true" selection-start-line="238" selection-start-column="40" selection-end-line="238" selection-end-column="40" />
-          <folding>
-            <element signature="e#10660#10661#0" expanded="true" />
-            <element signature="e#10689#10690#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/destroystokyo/paper/paper-api/1.13.2-R0.1-SNAPSHOT/paper-api-1.13.2-R0.1-20181128.042410-79-sources.jar!/org/bukkit/inventory/meta/ItemMeta.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="94" column="9" selection-start-line="94" selection-start-column="9" selection-end-line="94" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/destroystokyo/paper/paper-api/1.13.2-R0.1-SNAPSHOT/paper-api-1.13.2-R0.1-20181128.042410-79-sources.jar!/org/bukkit/entity/EntityType.java" />
+    <entry file="jar://$MAVEN_REPOSITORY$/com/destroystokyo/paper/paper-api/1.13.2-R0.1-SNAPSHOT/paper-api-1.13.2-R0.1-20181128.042410-79-sources.jar!/org/bukkit/inventory/meta/ItemMeta.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/gui/GuiItem.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="561">
           <caret line="37" column="28" selection-start-line="37" selection-start-column="28" selection-end-line="37" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/gui/Skull.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="969">
-          <caret line="69" column="24" selection-start-line="69" selection-start-column="24" selection-end-line="69" selection-end-column="24" />
-          <folding>
-            <element signature="e#3646#3647#0" expanded="true" />
-            <element signature="e#3671#3672#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -468,25 +501,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PickupSpawners.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4">
-          <caret line="11" column="66" lean-forward="true" selection-start-line="11" selection-start-column="66" selection-end-line="11" selection-end-column="66" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/pickupspawners.iml" />
     <entry file="file://$PROJECT_DIR$/.gitattributes">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/module_pickupspawners.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2720">
-          <caret line="160" column="13" selection-start-line="160" selection-start-column="13" selection-end-line="160" selection-end-column="13" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pickupspawners.xml">
       <provider selected="true" editor-type-id="text-editor">
@@ -509,13 +529,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/destroystokyo/paper/paper-api/1.13.2-R0.1-SNAPSHOT/paper-api-1.13.2-R0.1-20181202.233426-84-sources.jar!/org/bukkit/event/inventory/InventoryClickEvent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="45" column="13" selection-start-line="45" selection-start-column="13" selection-end-line="45" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/destroystokyo/paper/paper-api/1.13.2-R0.1-SNAPSHOT/paper-api-1.13.2-R0.1-20181202.233426-84-sources.jar!/org/bukkit/event/inventory/InventoryClickEvent.java" />
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_171/src.zip!/java/lang/String.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
@@ -523,28 +537,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/gui/PickupGui.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/Updater.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="43" column="5" selection-start-line="43" selection-start-column="5" selection-end-line="43" selection-end-column="5" />
+        <state relative-caret-position="833">
+          <caret line="59" column="25" selection-start-line="59" selection-start-column="25" selection-end-line="59" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/event/SpawnerBreakEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="37" column="43" selection-start-line="37" selection-start-column="43" selection-end-line="37" selection-end-column="43" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#spawnerGiveList#0;class#PickupGui#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/PickupSpawners.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/event/SpawnerPlaceEvent.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="51" column="26" selection-start-line="51" selection-start-column="26" selection-end-line="51" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/Listener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5695">
-          <caret line="384" selection-start-line="384" selection-end-line="384" />
+        <state relative-caret-position="68">
+          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -560,8 +573,72 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/language/Language.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1105">
-          <caret line="98" column="71" selection-start-line="98" selection-start-column="71" selection-end-line="98" selection-end-column="71" />
+        <state relative-caret-position="2448">
+          <caret line="177" column="41" selection-start-line="177" selection-start-column="41" selection-end-line="177" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/gui/Skull.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="969">
+          <caret line="69" column="24" selection-start-line="69" selection-start-column="24" selection-end-line="69" selection-end-column="24" />
+          <folding>
+            <element signature="e#3646#3647#0" expanded="true" />
+            <element signature="e#3671#3672#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/libraries/Maven__com_destroystokyo_paper_paper_api_1_13_2_R0_1_SNAPSHOT.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/libraries/Maven__commons_codec_commons_codec_1_9.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/libraries/Maven__javax_persistence_persistence_api_1_0.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_lang3_3_3_2.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/jarRepositories.xml" />
+    <entry file="file://$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_6_1_1.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_tree_6_1_1.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/libraries/Maven__org_yaml_snakeyaml_1_23.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="98" selection-start-line="9" selection-start-column="98" selection-end-line="9" selection-end-column="98" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/compiler.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="10" selection-start-line="17" selection-start-column="10" selection-end-line="17" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/module_pickupspawners.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2720">
+          <caret line="160" column="13" selection-start-line="160" selection-start-column="13" selection-end-line="160" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/modules.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/gui/Reflections.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1513">
+          <caret line="96" column="12" selection-start-line="96" selection-start-column="12" selection-end-line="96" selection-end-column="12" />
         </state>
       </provider>
     </entry>
@@ -572,17 +649,77 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/misc.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/encodings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="10" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/XMaterial.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="30" column="23" selection-start-line="30" selection-start-column="23" selection-end-line="30" selection-end-column="23" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/SettingsManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="275">
+          <caret line="27" column="16" selection-start-line="27" selection-start-column="16" selection-end-line="27" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/Listener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="764" column="71" selection-start-line="764" selection-start-column="71" selection-end-line="764" selection-end-column="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/PickupSpawners.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="646">
+          <caret line="332" column="10" selection-start-line="332" selection-start-column="10" selection-end-line="332" selection-end-column="10" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2899#2900#0" expanded="true" />
+            <element signature="e#2990#2991#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/gui/PickupGui.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="321">
+          <caret line="81" column="71" lean-forward="true" selection-start-line="81" selection-start-column="71" selection-end-line="81" selection-end-column="71" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/me/poma123/spawners/PSCommand.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="85" column="28" lean-forward="true" selection-start-line="85" selection-start-column="28" selection-end-line="85" selection-end-column="28" />
+        <state relative-caret-position="355">
+          <caret line="450" lean-forward="true" selection-start-line="450" selection-end-line="450" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="27" column="15" lean-forward="true" selection-start-line="27" selection-start-column="15" selection-end-line="27" selection-end-column="15" />
+        <state relative-caret-position="408">
+          <caret line="24" column="28" selection-start-line="24" selection-start-column="28" selection-end-line="24" selection-end-column="28" />
         </state>
       </provider>
     </entry>
@@ -647,11 +784,12 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>Minecraft|PickupSpawners</last-edited>
+          <last-edited>PickupSpawners</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>

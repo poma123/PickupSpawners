@@ -54,22 +54,35 @@ public class PickupGui implements Listener {
         for (String path : s.getConfig().getConfigurationSection("item").getKeys(false)) {
             Material matt;
             ItemStack localItemStack;
+            ItemStack saved = (ItemStack) s.getConfig().get("item." + path + ".itemstack");
             boolean isPerm = SettingsManager.getInstance().getConfig().get("item." + path + ".permission") != null;
             try {
-
-                matt = Material.getMaterial(SettingsManager.getInstance().getConfig().getString("item." + path + ".material"));
-                localItemStack = new ItemStack(matt, 1);
+                // matt = ((ItemStack) SettingsManager.getInstance().getConfig().get("item." + path + ".itemstack")).getType();
+                //matt = Material.getMaterial(SettingsManager.getInstance().getConfig().getString("item." + path + ".material"));
+                // localItemStack = new ItemStack(matt, 1);
+                localItemStack = new ItemStack(saved.getType(), 1);
+                localItemStack.setItemMeta(saved.getItemMeta());
 
                 if (s.getConfig().get("item." + path + ".enchants") != null) {
                     ItemMeta meta = localItemStack.getItemMeta();
                     List<String> lore = new ArrayList<String>();
+                    if (meta.hasLore()) {
+                        for (String str : meta.getLore()) {
+                            lore.add(str);
+                        }
+                    }
+
+                    //debug    System.out.println(meta.getLore());
+                    lore.add("");
+                    //debug  System.out.println("1. " + lore.toString());
 
                     for (String str : s.getConfig().getStringList("item." + path + ".enchants")) {
-                        str = str.toLowerCase();
+                        Enchantment ench = Enchantment.getByName(str.split(":")[0].toUpperCase());
+                        str = str.replace(str.split(":")[0], "");
+                        str = ench.getName().toLowerCase() + ":" + str;
                         String output = str.replaceFirst("" + str.charAt(0), "" + Character.toUpperCase(str.charAt(0))).replace("_", " ").replace(":", " ");
                         lore.add("§7" + output);
-
-
+                        //   System.out.println("2. " + lore.toString());
                     }
                     lore.add("");
                     if (isPerm) {
@@ -77,8 +90,10 @@ public class PickupGui implements Listener {
 
                     }
 
+                    //debug   System.out.println("3. " + lore.toString());
                     lore.add("§eBreakerID: " + path);
                     meta.setLore(lore);
+
                     meta.addEnchant(Enchantment.getByName("SILK_TOUCH"), 1, true);
                     meta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DESTROYS);
 
@@ -107,6 +122,7 @@ public class PickupGui implements Listener {
 
 
             } catch (Exception exc) {
+                exc.printStackTrace();
                 matt = Material.PAPER;
 
                 localItemStack = new ItemStack(matt, 1);
@@ -247,9 +263,9 @@ public class PickupGui implements Listener {
                 } else {
                     ItemStack item;
                     if (Material.getMaterial(s.toUpperCase() + "_SPAWN_EGG") == null) {
-                        item  = new ItemStack(Material.GHAST_SPAWN_EGG);
+                        item = new ItemStack(Material.GHAST_SPAWN_EGG);
                     } else {
-                        item =   new ItemStack(Material.getMaterial(s.toUpperCase() + "_SPAWN_EGG"));
+                        item = new ItemStack(Material.getMaterial(s.toUpperCase() + "_SPAWN_EGG"));
                     }
 
                     ItemMeta itemMeta = item.getItemMeta();

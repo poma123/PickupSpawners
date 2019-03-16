@@ -20,6 +20,7 @@ package me.poma123.spawners;
 import me.poma123.spawners.gui.PickupGui;
 import me.poma123.spawners.language.Language;
 import me.poma123.spawners.language.Language.LocalePath;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -43,7 +44,7 @@ public class PSCommand implements CommandExecutor, TabCompleter {
 
     public void sendHelp(CommandSender sender) {
         sender.sendMessage(
-                "§e[PickupSpawners] §7Commands:\n§7/pspawners §bgive <entity_name> §f- Gives you one spawner\n"
+                "§e[PickupSpawners] §7Commands:\n§7/pspawners §bgive <entity_name> <player> <amount> §f- Gives you one spawner\n"
                         + "§7/pspawners §badditem §f- Adds spawner breaker item to the db\n"
                         + "§7/pspawners §bupdateitem <breakerID> §f- Change an item breaker item to a new item\n"
                         + "§7/pspawners §bremoveitem <breakerID> §f- Removes spawner breaker item from the db\n"
@@ -70,6 +71,7 @@ public class PSCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+
         if (sender instanceof Player) {
 
             if (sender.hasPermission("pickupspawners.give") || sender.hasPermission("pickupspawners.additem")
@@ -132,7 +134,6 @@ public class PSCommand implements CommandExecutor, TabCompleter {
                     if (sender.hasPermission("pickupspawners.removeitempermission")) {
                         if (args.length > 1) {
                             if (sett.getConfig().get("item." + args[1] + ".permission") != null) {
-
 
 
                                 sett.getConfig().set("item." + args[1] + ".permission", null);
@@ -227,22 +228,43 @@ public class PSCommand implements CommandExecutor, TabCompleter {
 
                 } else if (args[0].equalsIgnoreCase("give")) {
                     if (sender.hasPermission("pickupspawners.give")) {
-                        if (args.length >= 2) {
+                        if (args.length >= 3) {
 
                             String spawnedType = args[1].toUpperCase();
                             if (me.poma123.spawners.PickupSpawners.entities.contains(spawnedType.toLowerCase())) {
-                                EntityType.valueOf(spawnedType);
-                                ItemStack spawner = new ItemStack(me.poma123.spawners.PickupSpawners.material, 1);
-                                ItemMeta swmeta = spawner.getItemMeta();
-                                // swmeta.setLocalizedName();
-                                swmeta.setDisplayName("§e" + spawnedType.toLowerCase() + " §7Spawner");
+                                if (Bukkit.getPlayer(args[2]) != null) {
+                                    Player player = Bukkit.getPlayer(args[2]);
+                                    EntityType.valueOf(spawnedType);
+                                    int amount = 1;
+                                    if (args.length >= 4) {
+                                        try {
+                                            amount = Integer.parseInt(args[3]);
+                                        } catch (Exception e) {
+                                            sender.sendMessage("§cThe amount argument is not a number.");
+                                            sender.sendMessage("§e[PickupSpawners] §7Usage:\n§7/pspawners §bgive <entity_name> <player> <amount>");
+                                            return true;
+                                        }
+                                    }
+                                    ItemStack spawner = new ItemStack(me.poma123.spawners.PickupSpawners.material, amount);
+                                    ItemMeta swmeta = spawner.getItemMeta();
+                                    // swmeta.setLocalizedName();
+                                    swmeta.setDisplayName("§e" + spawnedType.toLowerCase() + " §7Spawner");
 
-                                spawner.setItemMeta(swmeta);
+                                    spawner.setItemMeta(swmeta);
 
-                                p.getInventory().addItem(spawner);
+                                    player.getInventory().addItem(spawner);
 
-                                p.sendMessage(Language.getReplacedLocale(p, LocalePath.GIVE, "%count% %type%", 1 + " " + spawnedType.toLowerCase()));
+                                    player.sendMessage(Language.getReplacedLocale(player, LocalePath.GIVE, "%count% %type%", amount + " " + spawnedType.toLowerCase()));
 
+                                    p.sendMessage(me.poma123.spawners.Listener.getLang(p).equals("hu")
+                                            ? "§aAdtál " + amount + " §e" + spawnedType.toLowerCase() + " §aspawnert " + player.getName() + " játékosnak."
+
+                                            : "§aGave " + amount + " §e" + spawnedType.toLowerCase() + " §aspawner to " + player.getName() + ".");
+                                } else {
+                                    p.sendMessage(me.poma123.spawners.Listener.getLang(p).equals("hu")
+                                            ? "§cEz a játékos nem elérhető."
+                                            : "§cThis player isn't online.");
+                                }
                             } else {
                                 p.sendMessage(me.poma123.spawners.Listener.getLang(p).equals("hu")
                                         ? "§cA megadott entitás típus nem létezik."
@@ -250,7 +272,7 @@ public class PSCommand implements CommandExecutor, TabCompleter {
                             }
 
                         } else {
-                            sender.sendMessage("§e[PickupSpawners] §7Usage:\n§7/pspawners §bgive <entity_name>");
+                            sender.sendMessage("§e[PickupSpawners] §7Usage:\n§7/pspawners §bgive <entity_name> <player> <amount>");
 
                         }
 
@@ -258,6 +280,7 @@ public class PSCommand implements CommandExecutor, TabCompleter {
                         sender.sendMessage(Language.getLocale(p, LocalePath.NO_PERM));
                     }
                 } else if (args[0].equalsIgnoreCase("updateitem")) {
+                    //TODO 1.8-1.12 materialdata support
                     if (args.length > 1) {
                         if (sender.hasPermission("pickupspawners.updateitem")) {
                             if (sett.getConfig().get("item." + args[1]) != null) {
@@ -265,7 +288,7 @@ public class PSCommand implements CommandExecutor, TabCompleter {
                                     String random = args[1];
                                     sett.getConfig().set("item." + random, null);
 
-                                    Material mat = p.getInventory().getItemInMainHand().getType();
+
                                     List<String> enchants = new ArrayList<String>();
                                     if (!p.getInventory().getItemInMainHand().getEnchantments().isEmpty()) {
                                         for (Enchantment e : p.getInventory().getItemInMainHand().getEnchantments().keySet()) {
@@ -273,10 +296,10 @@ public class PSCommand implements CommandExecutor, TabCompleter {
                                             int value = p.getInventory().getItemInMainHand().getEnchantments().get(e);
                                             enchants.add(s + ":" + value);
                                         }
-
+                                        sett.getConfig().set("item." + random + ".itemstack", p.getInventory().getItemInMainHand());
                                         sett.getConfig().set("item." + random + ".enchants", enchants);
                                     }
-                                    sett.getConfig().set("item." + random + ".material", mat.toString());
+
                                     sett.saveConfig();
                                     sender.sendMessage(Listener.getLang((Player) sender).equalsIgnoreCase("hu")
                                             ? "§aKész! " + args[1] + " sikeresen frissítve!"
@@ -300,28 +323,59 @@ public class PSCommand implements CommandExecutor, TabCompleter {
                         sender.sendMessage("§e[PickupSpawners] §7Usage:\n§7/pspawners §bupdateitem <breakerID>");
                     }
                 } else if (args[0].equalsIgnoreCase("additem")) {
+                    //TODO 1.8-1.12 materialdata support
                     if (sender.hasPermission("pickupspawners.additem")) {
-                        if (!p.getInventory().getItemInMainHand().getType().equals(Material.AIR)) {
-                            String random = "random" + me.poma123.spawners.PickupSpawners.generateRandomString(7);
+                        ItemStack itemstack;
+                       /* XMaterial xmat;
+                        ItemStack output;
+                        byte data;*/
+                        if (ps.getVersion().contains("1_8_R")) {
+
+                            itemstack = p.getInventory().getItemInHand();
+
+                        } else {
+                            itemstack = p.getInventory().getItemInMainHand();
+
+                        }
+                        if (!itemstack.getType().equals(Material.AIR)) {
+                         /*   if (ps.getVersion().contains("1_8_R")) {
+
+
+                                xmat = XMaterial.requestXMaterial(itemstack.getType().toString(), itemstack.getData().getData());
+                                output = xmat.parseItem();
+                                data =  output.getData().getData();
+                            } else {
+
+                                xmat = XMaterial.fromString(itemstack.getType().toString());
+                                output = xmat.parseItem();
+                                data =  (byte) 0;
+                            }*/
+                            String random = "random" + PickupSpawners.generateRandomString(7);
                             if (sett.getConfig().get("item." + random) != null) {
-                                random = "random" + me.poma123.spawners.PickupSpawners.generateRandomString(7);
+                                random = "random" + PickupSpawners.generateRandomString(7);
                             }
-                            Material mat = p.getInventory().getItemInMainHand().getType();
+
+
+                            //   Material mat = itemstack.getType();
+
+
                             List<String> enchants = new ArrayList<String>();
-                            if (!p.getInventory().getItemInMainHand().getEnchantments().isEmpty()) {
-                                for (Enchantment e : p.getInventory().getItemInMainHand().getEnchantments().keySet()) {
+                            if (!itemstack.getEnchantments().isEmpty()) {
+                                for (Enchantment e : itemstack.getEnchantments().keySet()) {
                                     String s = e.getName();
-                                    int value = p.getInventory().getItemInMainHand().getEnchantments().get(e);
+                                    int value = itemstack.getEnchantments().get(e);
                                     enchants.add(s + ":" + value);
                                 }
 
                                 sett.getConfig().set("item." + random + ".enchants", enchants);
                             }
-                            sett.getConfig().set("item." + random + ".material", mat.toString());
+                            sett.getConfig().set("item." + random + ".itemstack", itemstack);
+                           /* sett.getConfig().set("item." + random + ".material", output.getType().toString());
+                            sett.getConfig().set("item." + random + ".data", data);*/
                             sett.saveConfig();
                             sender.sendMessage(Listener.getLang((Player) sender).equalsIgnoreCase("hu")
-                                    ? "§aKész! " + mat.toString() + " hozzáadva a spawnert kiütő tárgyak adatbázishoz!"
-                                    : "§aDone! " + mat.toString() + " added to the spawner breaker items database!");
+                                    ? "§aKész! " + itemstack.getType().toString() + " hozzáadva a spawnert kiütő tárgyak adatbázishoz!"
+                                    : "§aDone! " + itemstack.getType().toString() + " added to the spawner breaker items database!");
                             p.spigot().sendMessage(Listener.getLang((Player) sender).equalsIgnoreCase("hu")
                                     ? Listener.getHoverClickcmd("§c[Visszavonás]", "§c/pspawners removeitem " + random,
                                     "/pspawners removeitem " + random)
@@ -378,6 +432,7 @@ public class PSCommand implements CommandExecutor, TabCompleter {
                                 Language.getLocale(p, LocalePath.NO_PERM));
                     }
                 } else if (args[0].equalsIgnoreCase("itemlist")) {
+                    //TODO 1.8-1.12 materialdata support
                     if (sender.hasPermission("pickupspawners.itemlist")) {
                         sender.sendMessage("§8+-");
 
@@ -396,7 +451,7 @@ public class PSCommand implements CommandExecutor, TabCompleter {
 
                                 p.spigot()
                                         .sendMessage(Listener.getHoverClick(
-                                                "§8+ §b" + sett.getConfig().getString("item." + s + ".material"),
+                                                "§8+ §b" + ((ItemStack) sett.getConfig().get("item." + s + ".itemstack")).getType().toString(),
                                                 Listener.getLang((Player) sender).equalsIgnoreCase("hu")
                                                         ? "§7BreakerID: §e" + s + "\n\n§7Enchantok:§e" + ench
                                                         : "§7BreakerID: §e" + s + "\n\n§7Enchants:§e" + ench,
@@ -411,6 +466,140 @@ public class PSCommand implements CommandExecutor, TabCompleter {
                 } else {
                     sendHelp(sender);
                 }
+            }
+        } else {
+            if (args.length > 0) {
+                if (args[0].equalsIgnoreCase("setitempermission")) {
+
+
+                        if (args.length > 2) {
+                            if (sett.getConfig().get("item." + args[1]) != null) {
+
+
+                                String perm = ChatColor.stripColor(args[2].toLowerCase());
+                                sett.getConfig().set("item." + args[1] + ".permission", null);
+                                sett.getConfig().set("item." + args[1] + ".permission", perm);
+                                sett.saveConfig();
+                                sender.sendMessage("§aDone! " + args[1] + " item's permission succesfully set: " + perm);
+
+
+                            } else {
+                                sender.sendMessage("§cThis is not in the database.");
+                            }
+                        } else {
+                            sender.sendMessage("§e[PickupSpawners] §7Usage:\n§7/pspawners §bsetitempermission <breakerID> <permission>");
+
+                        }
+
+
+                } else if (args[0].equalsIgnoreCase("removeitempermission")) {
+
+
+                        if (args.length > 1) {
+                            if (sett.getConfig().get("item." + args[1] + ".permission") != null) {
+
+
+                                sett.getConfig().set("item." + args[1] + ".permission", null);
+                                sett.saveConfig();
+                                sender.sendMessage("§aDone! " + args[1] + " item's permission removed.");
+
+
+                            } else {
+                                sender.sendMessage("§cThis is not in the database.");
+                            }
+                        } else {
+                            sender.sendMessage("§e[PickupSpawners] §7Usage:\n§7/pspawners §bremoveitempermission <breakerID>");
+
+                        }
+
+
+                } else if (args[0].equalsIgnoreCase("give")) {
+
+                    if (args.length >= 3) {
+
+                        String spawnedType = args[1].toUpperCase();
+                        if (me.poma123.spawners.PickupSpawners.entities.contains(spawnedType.toLowerCase())) {
+                            if (Bukkit.getPlayer(args[2]) != null) {
+                                Player player = Bukkit.getPlayer(args[2]);
+                                EntityType.valueOf(spawnedType);
+                                int amount = 1;
+                                if (args.length >= 4) {
+                                    try {
+                                        amount = Integer.parseInt(args[3]);
+                                    } catch (Exception e) {
+                                        sender.sendMessage("§cThe amount argument is not a number.");
+                                        sender.sendMessage("§e[PickupSpawners] §7Usage:\n§7/pspawners §bgive <entity_name> <player> <amount>");
+                                        return true;
+                                    }
+                                }
+                                ItemStack spawner = new ItemStack(me.poma123.spawners.PickupSpawners.material, amount);
+                                ItemMeta swmeta = spawner.getItemMeta();
+                                // swmeta.setLocalizedName();
+                                swmeta.setDisplayName("§e" + spawnedType.toLowerCase() + " §7Spawner");
+
+                                spawner.setItemMeta(swmeta);
+
+                                player.getInventory().addItem(spawner);
+
+                                player.sendMessage(Language.getReplacedLocale(player, LocalePath.GIVE, "%count% %type%", amount + " " + spawnedType.toLowerCase()));
+
+                                sender.sendMessage("§aGave " + amount + " §e" + spawnedType.toLowerCase() + " §aspawner to " + player.getName() + ".");
+                            } else {
+                                sender.sendMessage("§cThis player isn't online.");
+                            }
+                        } else {
+                            sender.sendMessage("§cThis entity type is invalid.");
+                        }
+
+                    } else {
+                        sender.sendMessage("§e[PickupSpawners] §7Usage:\n§7/pspawners §bgive <entity_name> <player> <amount>");
+
+                    }
+
+
+                } else if (args[0].equalsIgnoreCase("removeitem")) {
+                    if (args.length == 2) {
+                        if (sett.getConfig().get("item." + args[1]) != null) {
+                            sender.sendMessage("§cPlease type in, to confirm: /pspawners removeitem " + args[1] + " confirm");
+                        } else {
+                            sender.sendMessage("§cThis is not in the database.");
+                        }
+                    } else if (args.length >= 3) {
+                        if (args[2].equalsIgnoreCase("confirm")) {
+                            if (sett.getConfig().get("item." + args[1]) != null) {
+                                sett.getConfig().set("item." + args[1], null);
+                                sett.saveConfig();
+                                sender.sendMessage("§aSuccesfully removed this item from the database.");
+                            } else {
+                                sender.sendMessage("§cThis is not in the database.");
+                            }
+                        } else {
+                            sender.sendMessage(
+                                    "§e[PickupSpawners] §7Usage:\n§7/pspawners §bremoveitem <breakerID>");
+                        }
+                    } else {
+                        sender.sendMessage("§e[PickupSpawners] §7Usage:\n§7/pspawners §bremoveitem <breakerID>");
+                    }
+
+                } else {
+                    sender.sendMessage("     - - - - - - - -");
+                    sender.sendMessage("PickupSpawners Console Help:");
+                    sender.sendMessage("");
+                    sender.sendMessage("/pspawners give <entity_name> <player> <amount>");
+                    sender.sendMessage("/pspawners removeitem <breakerID>");
+                    sender.sendMessage("/pspawners removeitempermission <breakerID>");
+                    sender.sendMessage("/pspawners setitempermission <breakerID>");
+                    sender.sendMessage("     - - - - - - - -");
+                }
+            } else {
+                sender.sendMessage("     - - - - - - - -");
+                sender.sendMessage("PickupSpawners Console Help:");
+                sender.sendMessage("");
+                sender.sendMessage("/pspawners give <entity_name> <player> <amount>");
+                sender.sendMessage("/pspawners removeitem <breakerID>");
+                sender.sendMessage("/pspawners removeitempermission <breakerID>");
+                sender.sendMessage("/pspawners setitempermission <breakerID>");
+                sender.sendMessage("     - - - - - - - -");
             }
         }
         return true;

@@ -17,6 +17,8 @@
 
 package me.poma123.spawners;
 
+import me.poma123.spawners.event.SpawnerBreakEvent;
+import me.poma123.spawners.event.SpawnerPlaceEvent;
 import me.poma123.spawners.gui.PickupGui;
 import me.poma123.spawners.language.Language;
 import me.poma123.spawners.language.Language.LocalePath;
@@ -32,8 +34,12 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.Sign;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -47,16 +53,18 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.regex.Pattern;
 
 public class Listener implements org.bukkit.event.Listener {
-    PickupSpawners ps = PickupSpawners.getInstance();
     public static int breakedSpawners = 0;
-    Map<String, Integer> limit = new TreeMap<String, Integer>();
+    PickupSpawners ps = PickupSpawners.getInstance();
     SettingsManager sett = SettingsManager.getInstance();
     private Plugin plugin = PickupSpawners.getPlugin(PickupSpawners.class);
     private Material material = PickupSpawners.material;
@@ -102,7 +110,7 @@ public class Listener implements org.bukkit.event.Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
-        Player player = (Player)e.getWhoClicked();
+        Player player = (Player) e.getWhoClicked();
 
         Inventory open = e.getClickedInventory();
         ItemStack items = e.getCurrentItem();
@@ -153,7 +161,7 @@ public class Listener implements org.bukkit.event.Listener {
 
             if (items.getItemMeta().getLore().toString().contains("BreakerID")) {
 
-                String str = ChatColor.stripColor(items.getItemMeta().getLore().get(items.getItemMeta().getLore().size()-1)).replace("BreakerID: ", "");
+                String str = ChatColor.stripColor(items.getItemMeta().getLore().get(items.getItemMeta().getLore().size() - 1)).replace("BreakerID: ", "");
                 player.closeInventory();
                 sendBreakerItemCommands(player, str);
             }
@@ -207,7 +215,7 @@ public class Listener implements org.bukkit.event.Listener {
                 e.getWhoClicked().closeInventory();
                 String lore = items.getItemMeta().getLore().get(0);
                 if (lore.contains("Back to page")) {
-                int page = Integer.parseInt(lore.replace("§7Back to page ", ""));
+                    int page = Integer.parseInt(lore.replace("§7Back to page ", ""));
                     e.getWhoClicked().closeInventory();
                     gui.spawnerGiveList((Player) e.getWhoClicked(), page);
                 } else {
@@ -231,8 +239,6 @@ public class Listener implements org.bukkit.event.Listener {
             }
             if (items.getItemMeta().getDisplayName().contains("§6§l")) {
                 String type = ChatColor.stripColor(items.getItemMeta().getDisplayName().split(" ")[0].toLowerCase());
-
-
 
 
                 if (ps.entities.contains(type)) {
@@ -261,7 +267,6 @@ public class Listener implements org.bukkit.event.Listener {
     }
 
     /**
-     *
      * @param player
      * @param breakerID
      */
@@ -270,11 +275,11 @@ public class Listener implements org.bukkit.event.Listener {
         player.spigot().sendMessage(getHoverSuggest("§e [*] §6Edit item §8§o(Click here)", "§7/pspawners §bupdateitem " + breakerID, "/pspawners updateitem " + breakerID));
         player.spigot().sendMessage(getHoverSuggest("§e [*] §3Set permission §8§o(Click here)", "§7/pspawners §bsetitempermission " + breakerID + " <permission>", "/pspawners setitempermission " + breakerID + " <permission>"));
         if (sett.getConfig().get("item." + breakerID + ".permission") != null) {
-            player.spigot().sendMessage(getHoverSuggest("§c [-] Remove permission §8§o(Click here)", "§7/pspawners §bremoveitempermission " + breakerID , "/pspawners removeitempermission " + breakerID));
+            player.spigot().sendMessage(getHoverSuggest("§c [-] Remove permission §8§o(Click here)", "§7/pspawners §bremoveitempermission " + breakerID, "/pspawners removeitempermission " + breakerID));
         }
         player.spigot().sendMessage(getHoverSuggest("§c [-] Remove item §8§o(Click here)", "§7/pspawners §bremoveitem " + breakerID, "/pspawners removeitem " + breakerID));
 
-                player.sendMessage("\n\n§b#-------------------------------------#\n");
+        player.sendMessage("\n\n§b#-------------------------------------#\n");
     }
 
 
@@ -305,139 +310,328 @@ public class Listener implements org.bukkit.event.Listener {
         }
     }
 
+    private boolean isLimitBlocks(Player p) {
+        if (p.hasPermission("spawnerlimit.bypass")) {
+            return false;
+        }
+        Date date = new Date();
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        int year = localDate.getYear();
+        int month = localDate.getMonthValue();
+        int day = localDate.getDayOfMonth();
+        Object limit = sett.getConfig().get("daily-broke-limit");
+        int limit1 = 0;
+        try {
+
+            limit1 = (int) limit;
+
+        } catch (Exception e) {
+            System.out.println(
+                    "§c[PickupSpawners-ERROR] The daily break limit is not an integer in the config.yml. Please fix it. Daily limit skipped.");
+            return false;
+        }
+
+
+        if (limit1 > 0) {
+            File f = new File(ps.getDataFolder() + File.separator + "daily_limits.yml");
+
+
+            if (!f.exists()) {
+
+                try {
+                    f.createNewFile();
+                    FileConfiguration conf = YamlConfiguration.loadConfiguration(f);
+                    conf.set("date", year + "_" + month + "_" + day);
+                    conf.save(f);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            FileConfiguration conf = YamlConfiguration.loadConfiguration(f);
+            if (!conf.get("date").equals(year + "_" + month + "_" + day)) {
+                conf.set("players", null);
+                conf.set("date", year + "_" + month + "_" + day);
+                try {
+                    conf.save(f);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                if (conf.get("players." + p.getName()) != null) {
+
+
+                    int localLimit = conf.getInt("players." + p.getName());
+                    if (localLimit >= limit1) {
+                        p.sendMessage(Language.getReplacedLocale(p, Language.LocalePath.LIMIT_REACH, "%limit%",
+                                String.valueOf(limit1)));
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
+    public boolean isItemStacksGood(ItemStack saved, ItemStack used, String path) {
+        if (used.hasItemMeta() && saved.hasItemMeta()) {
+            ItemMeta savedM = saved.getItemMeta();
+            ItemMeta usedM = used.getItemMeta();
+            boolean disp = true;
+            boolean lore = true;
+            boolean enchants = true;
+            boolean material = true;
+            if (used.getType().equals(saved.getType())) {
+                material = true;
+            } else {
+                material = false;
+            }
+            if (savedM.hasDisplayName()) {
+                if (!usedM.hasDisplayName()) {
+                    disp = false;
+                } else {
+                    if (usedM.getDisplayName().equalsIgnoreCase(savedM.getDisplayName())) {
+                        disp = true;
+                    } else {
+                        disp = false;
+                    }
+                }
+            }
+            if (savedM.hasLore()) {
+                if (!usedM.hasLore()) {
+                    lore = false;
+                } else {
+                    if (usedM.getLore().equals(savedM.getLore())) {
+                        lore = true;
+                    } else {
+                        lore = false;
+                    }
+                }
+            }
+
+            if ( savedM.hasEnchants()) {
+                if (!usedM.hasEnchants()) {
+                    enchants = false;
+                } else {
+                    boolean containsAllEnchants = false;
+                    String enchantments = "";
+                    for (String ench : sett.getConfig().getStringList("item." + path + ".enchants")) {
+
+                        if (ench.contains(":")) {
+                            enchantments = enchantments + "(?=.*" + ench.split(":")[0].toUpperCase() + "]="
+                                    + ench.split(":")[1] + ")";
+                        } else {
+                            enchantments = enchantments + "(?=.*" + ench.toUpperCase() + "]=" + ")";
+                        }
+                    }
+               /* for (Enchantment encha : saved.getEnchantments().keySet()) {
+
+                    String ench = encha.getName();
+                    Integer value = saved.getEnchantments().get(encha);
+
+                        enchantments = enchantments + "(?=.*" + ench.toUpperCase() + "]="
+                                + value + ")";
+
+                    //    enchantments = enchantments + "(?=.*" + ench.toUpperCase() + "]=" + ")";
+
+                }*/
+
+                    Pattern pattern = Pattern.compile(enchantments);
+                    if (pattern.matcher(used.getEnchantments().toString()).find()) {
+                        containsAllEnchants = true;
+                    }
+
+                    if (containsAllEnchants) {
+                        enchants = true;
+                    } else {
+                        enchants = false;
+                    }
+                }
+            }
+
+            if (disp && lore && enchants && material) {
+                return true;
+            }
+
+
+        } else {
+            if (used.equals(saved)) {
+                return true;
+            }
+        }
+        return false;
+    }
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onSpawnerBreak(BlockBreakEvent e) {
         Block s = e.getBlock();
         String lang = getLang(e.getPlayer());
-        Object limitcount1 = sett.getConfig().get("daily-broke-limit");
-        ItemStack item = e.getPlayer().getInventory().getItemInMainHand();
-        try {
-            int limitcount = (int) limitcount1;
-            if (limitcount > 0) {
 
-                if (s.getType().equals(material) && !e.getPlayer().hasPermission("spawnerlimit.bypass")) {
-                    if (limit.containsKey(e.getPlayer().getName())) {
-                        if (limit.get(e.getPlayer().getName()) >= limitcount) {
+        if (s.getType().equals(material)) {
+            if (isLimitBlocks(e.getPlayer())) {
 
-                            e.getPlayer().sendMessage(Language.getReplacedLocale(e.getPlayer(), LocalePath.LIMIT_REACH,
-                                    "%limit%", String.valueOf(limitcount)));
-                            // e.getPlayer().sendMessage(lang.equals("hu")? "§cElérted a napi kiüthető
-                            // spawner limitet (" + limitcount + ").": "§cYou have reached the daily spawner
-                            // break limit (" + limitcount + ").");
-                            e.setCancelled(true);
-                            return;
+                // e.getPlayer().sendMessage(lang.equals("hu")? "§cElérted a napi kiüthető
+                // spawner limitet (" + limitcount + ").": "§cYou have reached the daily spawner
+                // break limit (" + limitcount + ").");
+                e.setCancelled(true);
+                return;
+            }
+
+
+            ItemStack item;
+
+            if (PickupSpawners.getVersion().contains("1_8_")) {
+                item = e.getPlayer().getInventory().getItemInHand();
+
+            } else {
+                item = e.getPlayer().getInventory().getItemInMainHand();
+            }
+
+            boolean isGoodItem = false;
+
+            for (String string : sett.getConfig().getConfigurationSection("item").getKeys(false)) {
+                ItemStack breakerItem = (ItemStack) sett.getConfig().get("item." + string + ".itemstack");
+
+               /* Material mat = Material
+                        .matchMaterial(sett.getConfig().getString("item." + string + ".material").toUpperCase());*/
+               if (isItemStacksGood(breakerItem, item, string)) {
+                   if (sett.getConfig().get("item." + string + ".permission") != null) {
+                       if (e.getPlayer().hasPermission(sett.getConfig().getString("item." + string + ".permission"))) {
+                           isGoodItem = true;
+                       } else {
+                           isGoodItem = false;
+                           e.setCancelled(true);
+                           e.getPlayer().sendMessage(Language.getLocale(e.getPlayer(), LocalePath.NO_PERM));
+                           break;
+                       }
+                   } else {
+                       isGoodItem = true;
+                   }
+               }
+                /*List<String> enchants = new ArrayList<String>();
+                if (sett.getConfig().getStringList("item." + string + ".enchants") != null) {
+                    enchants = sett.getConfig().getStringList("item." + string + ".enchants");
+                }
+
+                if (enchants.isEmpty()) {
+
+                    if (item.getType().equals(mat)) {
+                        if (item.equals(breakerItem)) {  // TODO item equals breakeritem
+                            if (sett.getConfig().get("item." + string + ".permission") != null) {
+                                if (e.getPlayer().hasPermission(sett.getConfig().getString("item." + string + ".permission"))) {
+                                    isGoodItem = true;
+                                } else {
+                                    isGoodItem = false;
+                                    e.setCancelled(true);
+                                    e.getPlayer().sendMessage(Language.getLocale(e.getPlayer(), LocalePath.NO_PERM));
+                                    break;
+                                }
+                            } else {
+                                isGoodItem = true;
+                            }
                         }
                     }
+                } else {
+
+                    boolean containsAllEnchants = false;
+                    String enchantments = "";
+                    for (String ench : sett.getConfig().getStringList("item." + string + ".enchants")) {
+
+                        if (ench.contains(":")) {
+                            enchantments = enchantments + "(?=.*" + ench.split(":")[0].toUpperCase() + "]="
+                                    + ench.split(":")[1] + ")";
+                        } else {
+                            enchantments = enchantments + "(?=.*" + ench.toUpperCase() + "]=" + ")";
+                        }
+                    }
+
+                    Pattern pattern = Pattern.compile(enchantments);
+                    if (pattern.matcher(item.getEnchantments().toString()).find()) {
+                        containsAllEnchants = true;
+                    }
+
+                    if (item.getType().equals(mat) && containsAllEnchants) {
+                        if (sett.getConfig().get("item." + string + ".permission") != null) {
+                            if (e.getPlayer().hasPermission(sett.getConfig().getString("item." + string + ".permission"))) {
+                                isGoodItem = true;
+                            } else {
+                                isGoodItem = false;
+                                e.setCancelled(true);
+                                e.getPlayer().sendMessage(Language.getLocale(e.getPlayer(), LocalePath.NO_PERM));
+                                break;
+                            }
+                        } else {
+                            isGoodItem = true;
+                        }
+                    }
+
+                }*/
+
+                if (isGoodItem == true) {
+                    break;
+
                 }
             }
-        } catch (Exception ex) {
 
-            System.out.println(
-                    "§c[PickupSpawners-ERROR] The daily limit is not an integer in the config.yml. Please fix it. Daily limit skipped.");
-            ex.printStackTrace();
-        }
+            // if (item.getType().equals(Material.DIAMOND_PICKAXE)&&
+            // item.getEnchantments().containsKey(Enchantment.SILK_TOUCH)) {
+            if (isGoodItem) {
+                if (s.getType().equals(material)) {
 
-        boolean isGoodItem = false;
+                    Object event = new SpawnerBreakEvent(e.getPlayer(), s, item);
 
-        for (String string : sett.getConfig().getConfigurationSection("item").getKeys(false)) {
-            Material mat = Material
-                    .matchMaterial(sett.getConfig().getString("item." + string + ".material").toUpperCase());
-            List<String> enchants = new ArrayList<String>();
-            if (sett.getConfig().getStringList("item." + string + ".enchants") != null) {
-                enchants = sett.getConfig().getStringList("item." + string + ".enchants");
-            }
+                    CreatureSpawner cs = (CreatureSpawner) s.getState();
 
-            if (enchants.isEmpty()) {
-                if (item.getType().equals(mat)) {
-                    if (sett.getConfig().get("item." + string + ".permission") != null) {
-                        if (e.getPlayer().hasPermission(sett.getConfig().getString("item." + string + ".permission"))) {
-                            isGoodItem = true;
+                    ItemStack spawner = new ItemStack(material, 1);
+                    ItemMeta swmeta = spawner.getItemMeta();
+                    // swmeta.setLocalizedName();
+                    swmeta.setDisplayName("§e" + cs.getSpawnedType().name().toLowerCase() + " §7Spawner");
+
+                    e.setExpToDrop(0);
+                    spawner.setItemMeta(swmeta);
+
+                    Bukkit.getPluginManager().callEvent((Event) event);
+
+                    if (((SpawnerBreakEvent) event).isCancelled()) {
+                        return;
+                    }
+
+                    s.getWorld().dropItemNaturally(s.getLocation(), spawner);
+                    e.getPlayer().sendMessage(Language.getReplacedLocale(e.getPlayer(), LocalePath.BREAK, "%type%",
+                            cs.getSpawnedType().name().toLowerCase()));
+
+                    breakedSpawners++;
+                    // e.getPlayer().sendMessage(lang.equals("hu")? "§7Kiütöttél egy §e" +
+                    // cs.getSpawnedType().name().toLowerCase() + " §7spawnert!" : "§7You have
+                    // broken out one §e" + cs.getSpawnedType().name().toLowerCase() + "§7
+                    // spawner.");
+                    if (!e.getPlayer().hasPermission("spawnerlimit.bypass")) {
+                        File f = new File(ps.getDataFolder() + File.separator + "daily_limits.yml");
+
+                        FileConfiguration conf = YamlConfiguration.loadConfiguration(f);
+                        if (conf.get("players." + e.getPlayer().getName()) != null) {
+                            Integer value = conf.getInt("players." + e.getPlayer().getName()) + 1;
+
+                            conf.set("players." + e.getPlayer().getName(), value);
+                            try {
+                                conf.save(f);
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+
                         } else {
-                            isGoodItem = false;
-                            e.setCancelled(true);
-                            e.getPlayer().sendMessage(Language.getLocale(e.getPlayer(), LocalePath.NO_PERM));
-                            break;
+                            conf.set("players." + e.getPlayer().getName(), 1);
+                            try {
+                                conf.save(f);
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
                         }
-                    } else {
-                        isGoodItem = true;
                     }
                 }
             } else {
-
-                boolean containsAllEnchants = false;
-
-                String enchantments = "";
-
-                for (String ench : sett.getConfig().getStringList("item." + string + ".enchants")) {
-
-                    if (ench.contains(":")) {
-                        enchantments = enchantments + "(?=.*" + ench.split(":")[0].toUpperCase() + "]="
-                                + ench.split(":")[1] + ")";
-                    } else {
-                        enchantments = enchantments + "(?=.*" + ench.toUpperCase() + "]=" + ")";
-                    }
-                }
-
-                Pattern pattern = Pattern.compile(enchantments);
-                if (pattern.matcher(item.getEnchantments().toString()).find()) {
-                    containsAllEnchants = true;
-                }
-
-                if (item.getType().equals(mat) && containsAllEnchants) {
-                    if (sett.getConfig().get("item." + string + ".permission") != null) {
-                        if (e.getPlayer().hasPermission(sett.getConfig().getString("item." + string + ".permission"))) {
-                            isGoodItem = true;
-                        } else {
-                            isGoodItem = false;
-                            e.setCancelled(true);
-                            e.getPlayer().sendMessage(Language.getLocale(e.getPlayer(), LocalePath.NO_PERM));
-                            break;
-                        }
-                    } else {
-                        isGoodItem = true;
-                    }
-                }
-
-            }
-
-            if (isGoodItem == true) {
-                break;
-
-            }
-        }
-
-        // if (item.getType().equals(Material.DIAMOND_PICKAXE)&&
-        // item.getEnchantments().containsKey(Enchantment.SILK_TOUCH)) {
-        if (isGoodItem) {
-            if (s.getType().equals(material)) {
-
-                CreatureSpawner cs = (CreatureSpawner) s.getState();
-
-                ItemStack spawner = new ItemStack(material, 1);
-                ItemMeta swmeta = spawner.getItemMeta();
-                // swmeta.setLocalizedName();
-                swmeta.setDisplayName("§e" + cs.getSpawnedType().name().toLowerCase() + " §7Spawner");
-
-                e.setExpToDrop(0);
-                spawner.setItemMeta(swmeta);
-
-                s.getWorld().dropItemNaturally(s.getLocation(), spawner);
-                e.getPlayer().sendMessage(Language.getReplacedLocale(e.getPlayer(), LocalePath.BREAK, "%type%",
-                        cs.getSpawnedType().name().toLowerCase()));
-
-                breakedSpawners++;
-                // e.getPlayer().sendMessage(lang.equals("hu")? "§7Kiütöttél egy §e" +
-                // cs.getSpawnedType().name().toLowerCase() + " §7spawnert!" : "§7You have
-                // broken out one §e" + cs.getSpawnedType().name().toLowerCase() + "§7
-                // spawner.");
-                if (!e.getPlayer().hasPermission("spawnerlimit.bypass")) {
-                    if (limit.containsKey(e.getPlayer().getName())) {
-                        Integer value = limit.get(e.getPlayer().getName()) + 1;
-                        limit.remove(e.getPlayer().getName());
-                        limit.put(e.getPlayer().getName(), value);
-                    } else {
-                        limit.put(e.getPlayer().getName(), 1);
-                    }
+                if (!e.getPlayer().hasPermission("pickupspawners.bypasspickupblock")) {
+                    e.getPlayer().sendMessage(Language.getLocale(e.getPlayer(), Language.LocalePath.CANNOT_PICKUP));
+                    e.setCancelled(true);
                 }
             }
         }
@@ -465,6 +659,19 @@ public class Listener implements org.bukkit.event.Listener {
 
                         return;
 
+                    }
+
+                    String type = spawnerName;
+                    if (EntityType.values().toString().toLowerCase().contains(type.toLowerCase())) {
+
+                    } else {
+                        type = "PIG";
+                    }
+                    Object ev = new SpawnerPlaceEvent(event.getPlayer(), type);
+                    Bukkit.getPluginManager().callEvent((Event) ev);
+
+                    if (((SpawnerPlaceEvent) ev).isCancelled()) {
+                        return;
                     }
 
                     // spawner.setCreatureTypeByName(spawnerName);
@@ -524,11 +731,11 @@ public class Listener implements org.bukkit.event.Listener {
         Player p = e.getPlayer();
         Block b = e.getClickedBlock();
         if (e.getAction().equals(org.bukkit.event.block.Action.RIGHT_CLICK_BLOCK)) {
-            if (p.hasPermission("pickupspawners.signshop.use")) {
-                if (b.getType().toString().contains("SIGN")) {
+            if (b.getType().toString().contains("SIGN")) {
 
-                    Sign s = (Sign) b.getState();
-                    if (s.getLine(0).equalsIgnoreCase("§1[PickupSpawners]")) {
+                Sign s = (Sign) b.getState();
+                if (s.getLine(0).equalsIgnoreCase("§1[PickupSpawners]")) {
+                    if (p.hasPermission("pickupspawners.signshop.use")) {
                         if (s.getLine(1).startsWith("B ")) {
                             String spawnedType = s.getLine(2).toUpperCase();
                             Integer count = 1;
@@ -579,12 +786,13 @@ public class Listener implements org.bukkit.event.Listener {
                                         : "§cThis entity type is invalid.");
                             }
                         }
+                    } else {
+
+
+                        p.sendMessage(Language.getLocale(p, LocalePath.NO_PERM));
                     }
+
                 }
-            } else {
-
-
-                p.sendMessage(Language.getLocale(p, LocalePath.NO_PERM));
             }
         }
     }

@@ -1,6 +1,7 @@
 me\poma123\spawners\PSCommand.class
 me\poma123\spawners\Updater$UpdateType.class
 me\poma123\spawners\Metrics.class
+me\poma123\spawners\event\SpawnerPlaceEvent.class
 me\poma123\spawners\gui\GuiItem.class
 me\poma123\spawners\Metrics$SimpleBarChart.class
 me\poma123\spawners\gui\Reflections$FieldAccessor.class
@@ -30,8 +31,10 @@ me\poma123\spawners\Metrics$AdvancedBarChart.class
 me\poma123\spawners\Metrics$1.class
 me\poma123\spawners\Metrics$AdvancedPie.class
 me\poma123\spawners\gui\Reflections.class
+me\poma123\spawners\XMaterial.class
 me\poma123\spawners\VaultAPI.class
 me\poma123\spawners\Updater$Result.class
 me\poma123\spawners\gui\Skull.class
+me\poma123\spawners\event\SpawnerBreakEvent.class
 me\poma123\spawners\gui\Reflections$1.class
 me\poma123\spawners\gui\Reflections$ConstructorInvoker.class
