@@ -252,7 +252,7 @@ public class PickupGui implements Listener {
 
         List<String> listByPage = sublists.get(page - 1);
 
-        if (ps.getVersion().contains("1_13_R")) {
+        if (ps.getVersion().contains("1_13_R") || ps.getVersion().contains("1_14_")) {
             for (String s : listByPage) {
                 if (s.equalsIgnoreCase("pig_zombie")) {
                     ItemStack item = new ItemStack(Material.ZOMBIE_PIGMAN_SPAWN_EGG);

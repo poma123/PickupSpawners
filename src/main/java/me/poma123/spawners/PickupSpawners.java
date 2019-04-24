@@ -40,6 +40,7 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
     public static Material material;
     public static List<String> entities = new ArrayList<String>();
     public static boolean isOnePointThirteen = false;
+    public static boolean isOnePointFourteen = false;
     static VaultAPI vault;
     private static PickupSpawners instance;
     public int ID = 62455;
@@ -116,7 +117,11 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
         /*
          * Spawner material setting by version
          */
-        if (getVersion().contains("1_13")) {
+        if (getVersion().contains("1_14")) {
+            material = Material.getMaterial("SPAWNER");
+            getLogger().info("1.14 native version detected. Configuring 1.14 compatibility...");
+            getLogger().info("Done!");
+        } else if (getVersion().contains("1_13")) {
             material = Material.getMaterial("SPAWNER");
             getLogger().info("1.13 native version detected. Configuring 1.13-1.13.2 compatibility...");
             getLogger().info("Done!");
@@ -130,10 +135,29 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
         /*
          * Getting and saving available entities
          */
-        String list1 = "ILLUSIONER, GIANT, ENDER_DRAGON, WITHER, MUSHROOM_COW, SNOWMAN, IRON_GOLEM";
-        for (EntityType entity : EntityType.values()) {
 
-            if (getVersion().contains("1_13_R")) {
+        for (EntityType entity : EntityType.values()) {
+            String list1 = "ILLUSIONER, GIANT, ENDER_DRAGON, WITHER, MUSHROOM_COW, SNOWMAN, IRON_GOLEM";
+            if (getVersion().contains("1_14")) {
+
+                if (entity.toString().toLowerCase().equals("pig_zombie")) {
+                    if (debug) {
+                        getLogger().info("[Debug] " + ChatColor.GREEN + entity.toString() + " added to the entities list.");
+                    }
+                    isOnePointFourteen = true;
+                    entities.add(entity.toString().toLowerCase());
+                } else if (Material.getMaterial(entity.toString().toUpperCase() + "_SPAWN_EGG") != null || list1.contains(entity.toString().toUpperCase())) {
+                    if (debug) {
+                        getLogger().info("[Debug] " + ChatColor.GREEN + entity.toString() + " added to the entities list.");
+                    }
+                    entities.add(entity.toString().toLowerCase());
+                } else {
+                    if (debug) {
+                        getLogger().info("[Debug] " + ChatColor.RED + entity.toString() + " NOT added to the entities list.");
+                    }
+                }
+            } else if (getVersion().contains("1_13_R")) {
+             
                 if (entity.toString().toLowerCase().equals("pig_zombie")) {
                     if (debug) {
                         getLogger().info("[Debug] " + ChatColor.GREEN + entity.toString() + " added to the entities list.");

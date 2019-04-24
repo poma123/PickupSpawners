@@ -119,7 +119,7 @@ public class Listener implements org.bukkit.event.Listener {
         if (open == null) {
             return;
         }
-        if (e.getView().getTopInventory().getName().equalsIgnoreCase("§1PickupSpawners Main Page")) {
+        if (e.getView().getTitle().equalsIgnoreCase("§1PickupSpawners Main Page")) {
             e.setCancelled(true);
             if (e.isShiftClick()) {
                 return;
@@ -149,7 +149,7 @@ public class Listener implements org.bukkit.event.Listener {
 
 
         }
-        if (e.getView().getTopInventory().getName().equalsIgnoreCase("§1PickupSpawners > Breaker Items")) {
+        if (e.getView().getTitle().equalsIgnoreCase("§1PickupSpawners > Breaker Items")) {
             e.setCancelled(true);
             if (e.isShiftClick()) {
                 return;
@@ -197,7 +197,7 @@ public class Listener implements org.bukkit.event.Listener {
                 }
             }
         }
-        if (e.getView().getTopInventory().getName().equalsIgnoreCase("§1PickupSpawners > Give")) {
+        if (e.getView().getTitle().equalsIgnoreCase("§1PickupSpawners > Give")) {
             e.setCancelled(true);
             if (e.isShiftClick()) {
                 return;

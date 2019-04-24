@@ -174,11 +174,14 @@ public class PSCommand implements CommandExecutor, TabCompleter {
 
                                 Block b = null;
 
-                                if (ps.isOnePointThirteen) {
-                                    b = player.getTargetBlock(5);
+                                if (ps.isOnePointFourteen) {
+                                    b = player.getTargetBlockExact(5);
+                                } else if (ps.isOnePointThirteen) {
+                                    b = player.getTargetBlockExact(5);
                                 } else {
                                     b = player.getTargetBlock((HashSet<Material>) null, 5);
                                 }
+
 
 
                                 if (b != null) {
