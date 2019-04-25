@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/PickupSpawners.iml" filepath="$PROJECT_DIR$/PickupSpawners.iml" />
       <module fileurl="file://$PROJECT_DIR$/pickupspawners.iml" filepath="$PROJECT_DIR$/pickupspawners.iml" />
     </modules>
   </component>
