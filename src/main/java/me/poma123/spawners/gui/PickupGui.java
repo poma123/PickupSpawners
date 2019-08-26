@@ -316,7 +316,7 @@ public class PickupGui implements Listener {
 
     public ItemStack getSpawnegg(String type) {
 
-        if (ps.isOnePointThirteen) {
+        if (ps.isOnePointThirteen || ps.isOnePointFourteen) {
             if (type.equalsIgnoreCase("PIG_ZOMBIE")) {
                 return new ItemStack(Material.ZOMBIE_PIGMAN_SPAWN_EGG, 1);
             } else {

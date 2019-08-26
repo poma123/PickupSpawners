@@ -56,7 +56,6 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
     }
 
     public static String generateRandomString(int length) {
-
         boolean useLetters = true;
         boolean useNumbers = true;
         String generatedString = RandomStringUtils.random(length, useLetters, useNumbers);
@@ -104,7 +103,6 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
         Language.saveLocales();
 
         /*
-
          * Just why not?
          */
         getLogger().info("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-");
@@ -251,6 +249,33 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
         }
         saveDefaultConfig();
         s.setup(PickupSpawners.getPlugin(PickupSpawners.class));
+
+
+
+        /*
+         * Setting new configuration sections
+         */
+
+
+        if (getConfig().get("break-limits") == null) {
+
+            if (getConfig().get("daily-broke-limit") != null) {
+                getConfig().set("break-limits.default", getConfig().getInt("daily-broke-limit"));
+            } else {
+                getConfig().set("break-limits.default", 0);
+            }
+
+            saveConfig();
+
+        }
+/*        if (s.getConfig().get("break-on-explosions") == null) {
+            s.getConfig().set("break-on-explosions.enabled", false);
+            s.getConfig().set("break-on-explosions.chance", 50);
+            s.saveConfig();
+        }*/
+
+
+
 
         /*
          * Setting the default spawner breaker item if the list is empty

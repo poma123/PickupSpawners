@@ -1,5 +1,5 @@
 name: PickupSpawners
-version: 2.9.4
+version: 2.9.6
 main: me.poma123.spawners.PickupSpawners
 api-version: 1.13
 softdepend: [Vault]
@@ -30,6 +30,8 @@ permissions:
     default: op
   pickupspawners.bypasspickupblock:
     default: op
+  pickupspawners.breaklimit.default:
+    default: true
 commands:
   pickupspawners:
     usage: /<command>

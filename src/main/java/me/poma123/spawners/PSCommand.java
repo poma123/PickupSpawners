@@ -33,6 +33,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
@@ -359,6 +360,8 @@ public class PSCommand implements CommandExecutor, TabCompleter {
                             }
 
 
+
+
                             //   Material mat = itemstack.getType();
 
 
@@ -372,6 +375,16 @@ public class PSCommand implements CommandExecutor, TabCompleter {
 
                                 sett.getConfig().set("item." + random + ".enchants", enchants);
                             }
+
+
+                            if (itemstack.hasItemMeta() && itemstack.getItemMeta() instanceof Damageable) {
+                                Damageable dm = (Damageable) itemstack.getItemMeta();
+                                if (dm.hasDamage()) {
+                                    sett.getConfig().set("item." + random + ".damage", dm.getDamage());
+                                }
+                            }
+
+
                             sett.getConfig().set("item." + random + ".itemstack", itemstack);
                            /* sett.getConfig().set("item." + random + ".material", output.getType().toString());
                             sett.getConfig().set("item." + random + ".data", data);*/

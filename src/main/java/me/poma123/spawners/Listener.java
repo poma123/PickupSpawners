@@ -43,13 +43,16 @@ import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
@@ -57,9 +60,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class Listener implements org.bukkit.event.Listener {
@@ -310,20 +311,73 @@ public class Listener implements org.bukkit.event.Listener {
         }
     }
 
+
+
+
+    public static <K, V extends Comparable<V>> NavigableMap<K, V> sortByValues(final Map<K, V> map) {
+        final Comparator<K> valueComparator = new Comparator<K>() {
+            @Override
+            public int compare(final K k1, final K k2) {
+                final int compare = map.get(k2).compareTo(map.get(k1));
+                if (compare == 0) {
+                    return 1;
+                }
+                return compare;
+            }
+        };
+        final NavigableMap<K, V> sortedByValues = new TreeMap<K, V>(valueComparator);
+        sortedByValues.putAll((Map<? extends K, ? extends V>)map);
+        return sortedByValues;
+    }
+
     private boolean isLimitBlocks(Player p) {
         if (p.hasPermission("spawnerlimit.bypass")) {
             return false;
         }
+        String limitPermissionPrefix = "pickupspawners.breaklimit.";
         Date date = new Date();
         LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         int year = localDate.getYear();
         int month = localDate.getMonthValue();
         int day = localDate.getDayOfMonth();
-        Object limit = sett.getConfig().get("daily-broke-limit");
+
+    //    List<String> limits = new ArrayList<>();
+        NavigableMap<String, Integer> map = new TreeMap<>();
+
+        for (String str : sett.getConfig().getConfigurationSection("break-limits").getKeys(false)) {
+           // limits.add(str + ";" + sett.getConfig().get("break-limits." + str));
+         //TODO DEBUG   plugin.getLogger().info(str +": " + sett.getConfig().getInt("break-limits." + str));
+            if (str.equals("default")) {
+            //    plugin.getLogger().info("VANJOG: "+ limitPermissionPrefix + str);
+                map.put(limitPermissionPrefix+str, sett.getConfig().getInt("break-limits." + str));
+            } else if (p.hasPermission(limitPermissionPrefix + str)) {
+               // plugin.getLogger().info("VANJOG: "+ limitPermissionPrefix + str);
+                map.put(limitPermissionPrefix+str, sett.getConfig().getInt("break-limits." + str));
+            }
+        }
+
+      /*  for (String str : limits) {
+            String path = str.split(";")[0];
+            int value = Integer.valueOf(str.split(";")[1]);
+            if (p.hasPermission(limitPermissionPrefix + path)) {
+                map.put(limitPermissionPrefix+path, value);
+            }
+        }*/
+
+        NavigableMap<String, Integer> sorted = sortByValues(map);
+
+        Map.Entry<String, Integer> lastEntry = sorted.firstEntry();
+        int limit = lastEntry.getValue();
+      //  System.out.println("LIMIT: " + limit);
+        //Object limit = sett.getConfig().get("daily-broke-limit");
+
+
+
+
         int limit1 = 0;
         try {
 
-            limit1 = (int) limit;
+            limit1 = limit;
 
         } catch (Exception e) {
             System.out.println(
@@ -374,6 +428,13 @@ public class Listener implements org.bukkit.event.Listener {
 
 
     public boolean isItemStacksGood(ItemStack saved, ItemStack used, String path) {
+        if (used == null) {
+            System.out.println("§c[PickupSpawners] The spawner breaker item (used) is null. Please create an issue with the following stacktrace on github.com/poma123/PickupSpawners");
+
+        }
+        if (saved == null) {
+            System.out.println("§c[PickupSpawners] The spawner breaker item (saved) is null. Please create an issue with the following stacktrace on github.com/poma123/PickupSpawners");
+        }
         if (used.hasItemMeta() && saved.hasItemMeta()) {
             ItemMeta savedM = saved.getItemMeta();
             ItemMeta usedM = used.getItemMeta();
@@ -381,6 +442,7 @@ public class Listener implements org.bukkit.event.Listener {
             boolean lore = true;
             boolean enchants = true;
             boolean material = true;
+            boolean damage = true;
             if (used.getType().equals(saved.getType())) {
                 material = true;
             } else {
@@ -409,6 +471,19 @@ public class Listener implements org.bukkit.event.Listener {
                 }
             }
 
+            if (PickupSpawners.getVersion().contains("1_13_") || PickupSpawners.getVersion().contains("1_14_") || PickupSpawners.getVersion().contains("1_15_")) {
+                if (savedM instanceof Damageable && ((Damageable) savedM).hasDamage()) {
+                    if (usedM instanceof Damageable && ((Damageable) usedM).hasDamage()) {
+                        if (((Damageable) usedM).getDamage() == ((Damageable) savedM).getDamage()) {
+                            damage = true;
+                        } else {
+                            damage = false;
+                        }
+                    } else {
+                        damage = false;
+                    }
+                }
+            }
             if ( savedM.hasEnchants()) {
                 if (!usedM.hasEnchants()) {
                     enchants = false;
@@ -449,7 +524,7 @@ public class Listener implements org.bukkit.event.Listener {
                 }
             }
 
-            if (disp && lore && enchants && material) {
+            if (disp && lore && enchants && material && damage) {
                 return true;
             }
 
@@ -461,7 +536,8 @@ public class Listener implements org.bukkit.event.Listener {
         }
         return false;
     }
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onSpawnerBreak(BlockBreakEvent e) {
         Block s = e.getBlock();
         String lang = getLang(e.getPlayer());
@@ -488,6 +564,9 @@ public class Listener implements org.bukkit.event.Listener {
 
             boolean isGoodItem = false;
 
+            if (item == null) {
+                return;
+            }
             for (String string : sett.getConfig().getConfigurationSection("item").getKeys(false)) {
                 ItemStack breakerItem = (ItemStack) sett.getConfig().get("item." + string + ".itemstack");
 
@@ -636,6 +715,11 @@ public class Listener implements org.bukkit.event.Listener {
             }
         }
     }
+
+    public boolean compareTwoList(List<String> models, String str) {
+        return Arrays.asList(str).stream().allMatch(t -> models.stream().anyMatch(t::contains));
+    }
+
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onSpawnerPlace(BlockPlaceEvent event) {

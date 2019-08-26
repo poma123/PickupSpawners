@@ -30,6 +30,8 @@ permissions:
     default: op
   pickupspawners.bypasspickupblock:
     default: op
+  pickupspawners.breaklimit.default:
+    default: true
 commands:
   pickupspawners:
     usage: /<command>
