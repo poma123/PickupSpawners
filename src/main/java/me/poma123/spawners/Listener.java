@@ -36,17 +36,14 @@ import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -108,6 +105,21 @@ public class Listener implements org.bukkit.event.Listener {
         return text;
     }
 
+    public static <K, V extends Comparable<V>> NavigableMap<K, V> sortByValues(final Map<K, V> map) {
+        final Comparator<K> valueComparator = new Comparator<K>() {
+            @Override
+            public int compare(final K k1, final K k2) {
+                final int compare = map.get(k2).compareTo(map.get(k1));
+                if (compare == 0) {
+                    return 1;
+                }
+                return compare;
+            }
+        };
+        final NavigableMap<K, V> sortedByValues = new TreeMap<K, V>(valueComparator);
+        sortedByValues.putAll((Map<? extends K, ? extends V>) map);
+        return sortedByValues;
+    }
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
@@ -283,7 +295,6 @@ public class Listener implements org.bukkit.event.Listener {
         player.sendMessage("\n\n§b#-------------------------------------#\n");
     }
 
-
     @EventHandler
     public void onOpJoin(PlayerJoinEvent e) {
         if (sett.getConfig().getBoolean("update-check")) {
@@ -311,25 +322,6 @@ public class Listener implements org.bukkit.event.Listener {
         }
     }
 
-
-
-
-    public static <K, V extends Comparable<V>> NavigableMap<K, V> sortByValues(final Map<K, V> map) {
-        final Comparator<K> valueComparator = new Comparator<K>() {
-            @Override
-            public int compare(final K k1, final K k2) {
-                final int compare = map.get(k2).compareTo(map.get(k1));
-                if (compare == 0) {
-                    return 1;
-                }
-                return compare;
-            }
-        };
-        final NavigableMap<K, V> sortedByValues = new TreeMap<K, V>(valueComparator);
-        sortedByValues.putAll((Map<? extends K, ? extends V>)map);
-        return sortedByValues;
-    }
-
     private boolean isLimitBlocks(Player p) {
         if (p.hasPermission("spawnerlimit.bypass")) {
             return false;
@@ -341,18 +333,18 @@ public class Listener implements org.bukkit.event.Listener {
         int month = localDate.getMonthValue();
         int day = localDate.getDayOfMonth();
 
-    //    List<String> limits = new ArrayList<>();
+        //    List<String> limits = new ArrayList<>();
         NavigableMap<String, Integer> map = new TreeMap<>();
 
         for (String str : sett.getConfig().getConfigurationSection("break-limits").getKeys(false)) {
-           // limits.add(str + ";" + sett.getConfig().get("break-limits." + str));
-         //TODO DEBUG   plugin.getLogger().info(str +": " + sett.getConfig().getInt("break-limits." + str));
+            // limits.add(str + ";" + sett.getConfig().get("break-limits." + str));
+            //TODO DEBUG   plugin.getLogger().info(str +": " + sett.getConfig().getInt("break-limits." + str));
             if (str.equals("default")) {
-            //    plugin.getLogger().info("VANJOG: "+ limitPermissionPrefix + str);
-                map.put(limitPermissionPrefix+str, sett.getConfig().getInt("break-limits." + str));
+                //    plugin.getLogger().info("VANJOG: "+ limitPermissionPrefix + str);
+                map.put(limitPermissionPrefix + str, sett.getConfig().getInt("break-limits." + str));
             } else if (p.hasPermission(limitPermissionPrefix + str)) {
-               // plugin.getLogger().info("VANJOG: "+ limitPermissionPrefix + str);
-                map.put(limitPermissionPrefix+str, sett.getConfig().getInt("break-limits." + str));
+                // plugin.getLogger().info("VANJOG: "+ limitPermissionPrefix + str);
+                map.put(limitPermissionPrefix + str, sett.getConfig().getInt("break-limits." + str));
             }
         }
 
@@ -368,10 +360,8 @@ public class Listener implements org.bukkit.event.Listener {
 
         Map.Entry<String, Integer> lastEntry = sorted.firstEntry();
         int limit = lastEntry.getValue();
-      //  System.out.println("LIMIT: " + limit);
+        //  System.out.println("LIMIT: " + limit);
         //Object limit = sett.getConfig().get("daily-broke-limit");
-
-
 
 
         int limit1 = 0;
@@ -484,7 +474,7 @@ public class Listener implements org.bukkit.event.Listener {
                     }
                 }
             }
-            if ( savedM.hasEnchants()) {
+            if (savedM.hasEnchants()) {
                 if (!usedM.hasEnchants()) {
                     enchants = false;
                 } else {
@@ -572,20 +562,20 @@ public class Listener implements org.bukkit.event.Listener {
 
                /* Material mat = Material
                         .matchMaterial(sett.getConfig().getString("item." + string + ".material").toUpperCase());*/
-               if (isItemStacksGood(breakerItem, item, string)) {
-                   if (sett.getConfig().get("item." + string + ".permission") != null) {
-                       if (e.getPlayer().hasPermission(sett.getConfig().getString("item." + string + ".permission"))) {
-                           isGoodItem = true;
-                       } else {
-                           isGoodItem = false;
-                           e.setCancelled(true);
-                           e.getPlayer().sendMessage(Language.getLocale(e.getPlayer(), LocalePath.NO_PERM));
-                           break;
-                       }
-                   } else {
-                       isGoodItem = true;
-                   }
-               }
+                if (isItemStacksGood(breakerItem, item, string)) {
+                    if (sett.getConfig().get("item." + string + ".permission") != null) {
+                        if (e.getPlayer().hasPermission(sett.getConfig().getString("item." + string + ".permission"))) {
+                            isGoodItem = true;
+                        } else {
+                            isGoodItem = false;
+                            e.setCancelled(true);
+                            e.getPlayer().sendMessage(Language.getLocale(e.getPlayer(), LocalePath.NO_PERM));
+                            break;
+                        }
+                    } else {
+                        isGoodItem = true;
+                    }
+                }
                 /*List<String> enchants = new ArrayList<String>();
                 if (sett.getConfig().getStringList("item." + string + ".enchants") != null) {
                     enchants = sett.getConfig().getStringList("item." + string + ".enchants");
@@ -766,7 +756,7 @@ public class Listener implements org.bukkit.event.Listener {
                         event.getPlayer().sendMessage(Language.getReplacedLocale(event.getPlayer(), LocalePath.PLACE,
                                 "%type%", spawnerName.toLowerCase()));
                         // event.getPlayer().sendMessage(lang.equals("hu")? "§7Letettél egy §e" +
-                        // spawnerName.toLowerCase() + " §7spawnert!" : "§7You have placen one §e" +
+                        // spawnerName.toLowerCase() + " §7spawnert!" : "§7You have placed one §e" +
                         // spawnerName.toLowerCase() + "§7 spawner.");
                     } catch (IllegalArgumentException e) {
                         spawner.setSpawnedType(EntityType.valueOf("PIG"));
@@ -775,7 +765,7 @@ public class Listener implements org.bukkit.event.Listener {
                         event.getPlayer().sendMessage(
                                 Language.getReplacedLocale(event.getPlayer(), LocalePath.PLACE, "%type%", "pig"));
                         // event.getPlayer().sendMessage(lang.equals("hu") ? "§7Letettél egy §epig
-                        // §7spawnert!": "§7You have placen one §epig §7spawner.");
+                        // §7spawnert!": "§7You have placed one §epig §7spawner.");
                     }
 
                     return;
@@ -801,7 +791,7 @@ public class Listener implements org.bukkit.event.Listener {
                     spawner.update(true, true);
                     event.getPlayer().sendMessage(
                             lang.equals("hu") ? "§7Letettél egy §e" + spawnerName.toLowerCase() + " §7spawnert!"
-                                    : "§7You have placen one §e" + spawnerName.toLowerCase() + "§7 spawner.");
+                                    : "§7You have placed one §e" + spawnerName.toLowerCase() + "§7 spawner.");
                     return;
                 }
             }
@@ -820,6 +810,7 @@ public class Listener implements org.bukkit.event.Listener {
                 Sign s = (Sign) b.getState();
                 if (s.getLine(0).equalsIgnoreCase("§1[PickupSpawners]")) {
                     if (p.hasPermission("pickupspawners.signshop.use")) {
+                        // BUY SIGN
                         if (s.getLine(1).startsWith("B ")) {
                             String spawnedType = s.getLine(2).toUpperCase();
                             Integer count = 1;
@@ -833,6 +824,7 @@ public class Listener implements org.bukkit.event.Listener {
                             }
 
                             if (me.poma123.spawners.PickupSpawners.entities.contains(spawnedType.toLowerCase())) {
+
 
                                 if (p.getInventory().firstEmpty() == -1) {
                                     p.sendMessage(Language.getLocale(p, LocalePath.NO_ENOUGH_SPACE_INV));
@@ -869,6 +861,73 @@ public class Listener implements org.bukkit.event.Listener {
                                         ? "§cA megadott entitás típus nem létezik."
                                         : "§cThis entity type is invalid.");
                             }
+                            // SELL SIGN
+                        } else  if (s.getLine(1).startsWith("S ")) {
+                            String spawnedType = s.getLine(2).toUpperCase();
+                            Integer count = 1;
+                            double price = 0;
+                            if (s.getLine(3) != null && PickupSpawners.isInteger(s.getLine(3))) {
+                                count = Integer.parseInt(s.getLine(3));
+                            }
+
+                            if (PickupSpawners.isDouble(s.getLine(1).split(" ")[1])) {
+                                price = Double.parseDouble(s.getLine(1).split(" ")[1]);
+                            }
+
+                            if (me.poma123.spawners.PickupSpawners.entities.contains(spawnedType.toLowerCase())) {
+
+                              /*  if (p.getInventory().firstEmpty() == -1) {
+                                    p.sendMessage(Language.getLocale(p, LocalePath.NO_ENOUGH_SPACE_INV));
+                                    return;
+                                }*/
+                                EntityType.valueOf(spawnedType);
+                                ItemStack spawner = new ItemStack(me.poma123.spawners.PickupSpawners.material);//, count);
+                                ItemMeta swmeta = spawner.getItemMeta();
+                                // swmeta.setLocalizedName();
+                                swmeta.setDisplayName("§e" + spawnedType.toLowerCase() + " §7Spawner");
+
+                                spawner.setItemMeta(swmeta);
+                              //  if (count > 1) {
+                                    if (!p.getInventory().containsAtLeast(spawner, count)) {
+                                        //TODO LANGUAGE
+                                        p.sendMessage(me.poma123.spawners.Listener.getLang(p).equals("hu")
+                                                ? "§cNincs elég tárgyad az eladáshoz."
+                                                : "§cYou don't have enough items to sell.");
+                                        return;
+                                    }
+                              /*  } else {
+                                    if (!p.getInventory().containsAtLeast(spawner, count)) {
+                                        //TODO LANGUAGE
+                                        p.sendMessage(me.poma123.spawners.Listener.getLang(p).equals("hu")
+                                                ? "§cNincs elég tárgyad az eladáshoz."
+                                                : "§cYou don't have enough items to sell.");
+                                        return;
+                                    }
+                                }*/
+
+                                try {
+                                    Economy economy = PickupSpawners.vault.getEconomy();
+                                    spawner.setAmount(count);
+                                    p.getInventory().removeItem(spawner);
+                                    economy.depositPlayer(p, price);
+                                    // TODO LANGUAGE
+
+                                    p.sendMessage(me.poma123.spawners.Listener.getLang(p).equals("hu")
+                                            ? "§aEladtál " + count +" §e" + spawnedType.toLowerCase() + "§a spawnert."
+                                            : "§aYou have sold " + count +" §e" + spawnedType.toLowerCase() + "§a spawner(s).");
+                                } catch (Exception ex) {
+                                    plugin.getLogger().warning(
+                                            "§cThere was an error when attempt to sell a spawner. Vault is not installed.");
+                                    p.sendMessage(
+                                            "§c[PickupSpawners] There was an error when attempt to sell a spawner. Please contact an administrator and tell them to look at the Console.");
+                                    return;
+                                }
+
+                            } else {
+                                p.sendMessage(me.poma123.spawners.Listener.getLang(p).equals("hu")
+                                        ? "§cA megadott entitás típus nem létezik."
+                                        : "§cThis entity type is invalid.");
+                            }
                         }
                     } else {
 
@@ -890,79 +949,132 @@ public class Listener implements org.bukkit.event.Listener {
 
         // TODO is shop enabled in config
         if (p.hasPermission("pickupspawners.signshop.create")) {
-            Sign sign = (Sign) b.getState();
-            if (e.getLines()[0].equalsIgnoreCase("[PickupSpawners]") || e.getLines()[0].equalsIgnoreCase("[Spawners]")
-                    || e.getLines()[0].equalsIgnoreCase("[ps]")) {
-                // if
-                // (s.getConfig().getStringList("shop-sign-prefixes").contains(e.getLines()[0]))
-                // {
-                if (e.getLine(1).startsWith("B") || e.getLine(1).startsWith("b")) {
-                    if (e.getLine(1).contains(" ") && PickupSpawners.isInteger(e.getLine(1).split(" ")[1])) {
-                        sign.setLine(0, "§1[PickupSpawners]");
-                        sign.setLine(1, e.getLine(1).replace("b", "B"));
-                        if (PickupSpawners.entities.contains(e.getLine(2).toLowerCase())) {
-                            sign.setLine(2, e.getLine(2).toLowerCase());
-                            if (PickupSpawners.isInteger(e.getLine(3))) {
-                                sign.setLine(3, e.getLine(3));
+            if (b.getState() instanceof Sign) {
+                Sign sign = (Sign) b.getState();
+                if (e.getLines()[0].equalsIgnoreCase("[PickupSpawners]") || e.getLines()[0].equalsIgnoreCase("[Spawners]")
+                        || e.getLines()[0].equalsIgnoreCase("[ps]")) {
+                    // if
+                    // (s.getConfig().getStringList("shop-sign-prefixes").contains(e.getLines()[0]))
+                    // {
+                    if (e.getLine(1).startsWith("B") || e.getLine(1).startsWith("b")) {
+                        if (e.getLine(1).contains(" ") && PickupSpawners.isInteger(e.getLine(1).split(" ")[1])) {
+                            sign.setLine(0, "§1[PickupSpawners]");
+                            sign.setLine(1, e.getLine(1).replace("b", "B"));
+                            if (PickupSpawners.entities.contains(e.getLine(2).toLowerCase())) {
+                                sign.setLine(2, e.getLine(2).toLowerCase());
+                                if (PickupSpawners.isInteger(e.getLine(3))) {
+                                    sign.setLine(3, e.getLine(3));
+
+                                } else {
+                                    sign.setLine(3, "1");
+                                }
+
+
+                                p.sendMessage("§e[PickupSpawners] §aBuy sign succesfully created!");
 
                             } else {
-                                sign.setLine(3, "1");
+
+                                sign.setLine(0, "§4[PickupSpawners]");
+                                sign.setLine(1, "");
+                                sign.setLine(2, "§cINVALID");
+                                p.sendMessage("§e[PickupSpawners] §cInvalid entity name.");
+
+                                /*
+                                 * final Player receipient =p; final ComponentBuilder message = new
+                                 * ComponentBuilder("§e[PickupSpawners] §cInvalid entity name. ");
+                                 *
+                                 * String entity = ""; int size = entities.size() / 2; int second =
+                                 * entities.size() - size -1;
+                                 *
+                                 * for (int i = 0; i < size; i++) {
+                                 *
+                                 * entity = entity + "\n§e- §7" + entities.get(i) + " §e- §7" +
+                                 * entities.get(second); second++; }
+                                 *
+                                 *
+                                 * message.append(ChatColor.GRAY +
+                                 * " §7[Valid entities] §o(Hover with cursor!)"); // message.event(new
+                                 * ClickEvent(ClickEvent.Action.RUN_COMMAND, "")); message.event(new
+                                 * HoverEvent(Action.SHOW_TEXT, TextComponent.fromLegacyText(entity)));
+                                 *
+                                 * receipient.spigot().sendMessage(message.create());
+                                 */
                             }
 
+                        } else {
+                            sign.setLine(0, "§4[PickupSpawners]");
+                            sign.setLine(2, "§cINVALID");
+                            p.sendMessage(
+                                    "§e[PickupSpawners] §cInvalid price line. §7(Valid price line: §oB <price>§r§7. Example: §oB 500§r§7)");
+                        }
+                    } else if (e.getLine(1).startsWith("S") || e.getLine(1).startsWith("s")) {
+                        if (e.getLine(1).contains(" ") && PickupSpawners.isInteger(e.getLine(1).split(" ")[1])) {
+                            sign.setLine(0, "§1[PickupSpawners]");
+                            sign.setLine(1, e.getLine(1).replace("s", "S"));
+                            if (PickupSpawners.entities.contains(e.getLine(2).toLowerCase())) {
+                                sign.setLine(2, e.getLine(2).toLowerCase());
+                                if (PickupSpawners.isInteger(e.getLine(3))) {
+                                    sign.setLine(3, e.getLine(3));
 
-                            p.sendMessage("§e[PickupSpawners] §aBuy sign succesfully created!");
+                                } else {
+                                    sign.setLine(3, "1");
+                                }
+
+
+                                p.sendMessage("§e[PickupSpawners] §aSell sign succesfully created!");
+
+                            } else {
+
+                                sign.setLine(0, "§4[PickupSpawners]");
+                                sign.setLine(1, "");
+                                sign.setLine(2, "§cINVALID");
+                                p.sendMessage("§e[PickupSpawners] §cInvalid entity name.");
+
+                                /*
+                                 * final Player receipient =p; final ComponentBuilder message = new
+                                 * ComponentBuilder("§e[PickupSpawners] §cInvalid entity name. ");
+                                 *
+                                 * String entity = ""; int size = entities.size() / 2; int second =
+                                 * entities.size() - size -1;
+                                 *
+                                 * for (int i = 0; i < size; i++) {
+                                 *
+                                 * entity = entity + "\n§e- §7" + entities.get(i) + " §e- §7" +
+                                 * entities.get(second); second++; }
+                                 *
+                                 *
+                                 * message.append(ChatColor.GRAY +
+                                 * " §7[Valid entities] §o(Hover with cursor!)"); // message.event(new
+                                 * ClickEvent(ClickEvent.Action.RUN_COMMAND, "")); message.event(new
+                                 * HoverEvent(Action.SHOW_TEXT, TextComponent.fromLegacyText(entity)));
+                                 *
+                                 * receipient.spigot().sendMessage(message.create());
+                                 */
+                            }
 
                         } else {
-
                             sign.setLine(0, "§4[PickupSpawners]");
-                            sign.setLine(1, "");
                             sign.setLine(2, "§cINVALID");
-                            p.sendMessage("§e[PickupSpawners] §cInvalid entity name.");
-
-                            /*
-                             * final Player receipient =p; final ComponentBuilder message = new
-                             * ComponentBuilder("§e[PickupSpawners] §cInvalid entity name. ");
-                             *
-                             * String entity = ""; int size = entities.size() / 2; int second =
-                             * entities.size() - size -1;
-                             *
-                             * for (int i = 0; i < size; i++) {
-                             *
-                             * entity = entity + "\n§e- §7" + entities.get(i) + " §e- §7" +
-                             * entities.get(second); second++; }
-                             *
-                             *
-                             * message.append(ChatColor.GRAY +
-                             * " §7[Valid entities] §o(Hover with cursor!)"); // message.event(new
-                             * ClickEvent(ClickEvent.Action.RUN_COMMAND, "")); message.event(new
-                             * HoverEvent(Action.SHOW_TEXT, TextComponent.fromLegacyText(entity)));
-                             *
-                             * receipient.spigot().sendMessage(message.create());
-                             */
+                            p.sendMessage(
+                                    "§e[PickupSpawners] §cInvalid price line. §7(Valid price line: §oS <price>§r§7. Example: §oS 500§r§7)");
                         }
-
                     } else {
                         sign.setLine(0, "§4[PickupSpawners]");
                         sign.setLine(2, "§cINVALID");
                         p.sendMessage(
-                                "§e[PickupSpawners] §cInvalid price line. §7(Valid price line: §oB <price>§r§7. Example: §oB 500§r§7)");
+                                "§e[PickupSpawners] §cInvalid price line. §7(Valid price lines are: §oB <price>§r§7, or §oS <price>§r§7. Example: §oB 500§r§7)");
                     }
-                } else {
-                    sign.setLine(0, "§4[PickupSpawners]");
-                    sign.setLine(2, "§cINVALID");
-                    p.sendMessage(
-                            "§e[PickupSpawners] §cInvalid price line. §7(Valid price line: §oB <price>§r§7. Example: §oB 500§r§7)");
-                }
-                Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                    @Override
-                    public void run() {
+                    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                        @Override
+                        public void run() {
 
-                        sign.update();
-                    }
-                }, 2);
+                            sign.update();
+                        }
+                    }, 2);
+
+                }
 
             }
-
         }
 
     }

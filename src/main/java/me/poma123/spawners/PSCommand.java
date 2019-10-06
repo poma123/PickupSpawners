@@ -68,6 +68,19 @@ public class PSCommand implements CommandExecutor, TabCompleter {
                 + "         zombie\n"
                 + "           2\n"
                 + "§7======================", ""));
+        ((Player) sender).spigot().sendMessage(Listener.getHoverClick("§e[PickupSpawners] §b§l[How to make a spawner sell sign]", "§7======================"
+                + "\n§b     Here is the syntax:\n"
+                + "\n§7§o1st line:   §f[PickupSpawners]"
+                + "\n§7§o2nd line:      §fS <price>"
+                + "\n§7§o3rd line:    §f<entity type>"
+                + "\n§7§o4th line:      §f<amount>"
+                + "\n\n"
+                + "§7Example:\n"
+                + "     [PickupSpawners]\n"
+                + "         S 500\n"
+                + "         zombie\n"
+                + "           2\n"
+                + "§7======================", ""));
     }
 
     @Override
@@ -198,7 +211,7 @@ public class PSCommand implements CommandExecutor, TabCompleter {
                                                     "%type_from%", from.toLowerCase()).replace("%type_to%", to.toLowerCase()));
 
                                             // event.getPlayer().sendMessage(lang.equals("hu")? "§7Letettél egy §e" +
-                                            // spawnerName.toLowerCase() + " §7spawnert!" : "§7You have placen one §e" +
+                                            // spawnerName.toLowerCase() + " §7spawnert!" : "§7You have placed one §e" +
                                             // spawnerName.toLowerCase() + "§7 spawner.");
                                         } catch (IllegalArgumentException e) {
                                             spawner.setSpawnedType(EntityType.valueOf("PIG"));
@@ -208,7 +221,7 @@ public class PSCommand implements CommandExecutor, TabCompleter {
                                                     "%type_from%", from.toLowerCase()).replace("%type_to%", to.toLowerCase()));
 
                                             // event.getPlayer().sendMessage(lang.equals("hu") ? "§7Letettél egy §epig
-                                            // §7spawnert!": "§7You have placen one §epig §7spawner.");
+                                            // §7spawnert!": "§7You have placed one §epig §7spawner.");
                                         }
                                     } else {
                                         player.sendMessage(Language.getLocale(player, LocalePath.CHANGE_ERROR_NOT_SPAWNER));

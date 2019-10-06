@@ -88,7 +88,7 @@ public class Language {
 
 		FileConfiguration en = YamlConfiguration.loadConfiguration(enFile);
 		en.addDefault(LocalePath.BREAK.getPath(), "&7You have broken out one &e%type%&7 spawner.");
-		en.addDefault(LocalePath.PLACE.getPath(), "&7You have placen one &e%type%&7 spawner.");
+		en.addDefault(LocalePath.PLACE.getPath(), "&7You have placed one &e%type%&7 spawner.");
 		en.addDefault(LocalePath.LIMIT_REACH.getPath(), "&cYou have reached the daily spawner break limit (%limit%).");
 		en.addDefault(LocalePath.NO_ENOUGH_MONEY.getPath(), "&cYou do not have enough money!");
 		en.addDefault("no-enough-space-inv", "&cThere are not enough space in your inventory!");
