@@ -711,6 +711,7 @@ public class Listener implements org.bukkit.event.Listener {
     }
 
 
+
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onSpawnerPlace(BlockPlaceEvent event) {
         Block block = event.getBlockPlaced();
@@ -720,6 +721,7 @@ public class Listener implements org.bukkit.event.Listener {
             ItemMeta meta = stack.getItemMeta();
 
             if (meta.getDisplayName().contains("§7Spawner")) {
+
                 CreatureSpawner spawner = (CreatureSpawner) block.getState();
                 String name = meta.getDisplayName();
 
@@ -733,6 +735,12 @@ public class Listener implements org.bukkit.event.Listener {
 
                         return;
 
+                    }
+
+                    if (!event.getPlayer().hasPermission("pickupspawners.place")) {
+                        event.getPlayer().sendMessage("§cEhhez nincs jogod! Váltsd be slimefun-os spawnerre a §e/warp spawnerek §cwarpon!");
+                        event.setCancelled(true);
+                        return;
                     }
 
                     String type = spawnerName;

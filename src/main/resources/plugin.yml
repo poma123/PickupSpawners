@@ -32,6 +32,8 @@ permissions:
     default: op
   pickupspawners.breaklimit.default:
     default: true
+  pickupspawners.place:
+    default: true
 commands:
   pickupspawners:
     usage: /<command>
