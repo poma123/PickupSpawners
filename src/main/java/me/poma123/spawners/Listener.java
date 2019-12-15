@@ -68,13 +68,14 @@ public class Listener implements org.bukkit.event.Listener {
     private Material material = PickupSpawners.material;
 
     public static String getLang(Player p) {
-        String[] s = StringUtils.split(p.spigot().getLocale(), '_');
+        String[] s = StringUtils.split(p.getLocale(), '_');
         return s[0];
     }
 
     public static String getLangExact(Player p) {
 
-        return p.spigot().getLocale();
+
+        return p.getLocale();
 
     }
 

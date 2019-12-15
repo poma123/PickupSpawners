@@ -115,9 +115,9 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
         /*
          * Spawner material setting by version
          */
-        if (getVersion().contains("1_14")) {
+        if (getVersion().contains("1_14") || getVersion().contains("1_15")) {
             material = Material.getMaterial("SPAWNER");
-            getLogger().info("1.14 native version detected. Configuring 1.14 compatibility...");
+            getLogger().info("1.14+ native version detected. Configuring 1.14+ compatibility...");
             getLogger().info("Done!");
         } else if (getVersion().contains("1_13")) {
             material = Material.getMaterial("SPAWNER");
@@ -136,7 +136,7 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
 
         for (EntityType entity : EntityType.values()) {
             String list1 = "ILLUSIONER, GIANT, ENDER_DRAGON, WITHER, MUSHROOM_COW, SNOWMAN, IRON_GOLEM";
-            if (getVersion().contains("1_14")) {
+            if (getVersion().contains("1_14") || getVersion().contains("1_15")) {
 
                 if (entity.toString().toLowerCase().equals("pig_zombie")) {
                     if (debug) {
