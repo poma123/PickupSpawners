@@ -55,6 +55,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -68,15 +69,35 @@ public class Listener implements org.bukkit.event.Listener {
     private Material material = PickupSpawners.material;
 
     public static String getLang(Player p) {
-        String[] s = StringUtils.split(p.getLocale(), '_');
-        return s[0];
+            String locale;
+            try {
+                Method getLocale = Class.forName("org.bukkit.entity.Player.Spigot").getMethod("getLocale");
+                locale = (String) getLocale.invoke(p.spigot());
+            } catch (Exception e) {
+                locale = p.getLocale();
+            }
+
+            String[] s = StringUtils.split(locale, '_');
+            return s[0];
     }
 
     public static String getLangExact(Player p) {
 
+        String locale;
+        try {
+            Method getLocale = Class.forName("org.bukkit.entity.Player.Spigot").getMethod("getLocale");
+            locale = (String) getLocale.invoke(p.spigot());
+        } catch (Exception e) {
+            locale = p.getLocale();
+        }
 
-        return p.getLocale();
+        return locale;
 
+       /* if (PickupSpawners.getVersion().contains("1_8_")) {
+            return p.spigot().getLocale();
+        } else {
+            return p.getLocale();
+        }*/
     }
 
     public static TextComponent getHoverClick(String message, String hover, String click) {
