@@ -71,7 +71,7 @@ public class Listener implements org.bukkit.event.Listener {
     public static String getLang(Player p) {
             String locale;
             try {
-                Method getLocale = Class.forName("org.bukkit.entity.Player.Spigot").getMethod("getLocale");
+                Method getLocale = Player.Spigot.class.getMethod("getLocale");
                 locale = (String) getLocale.invoke(p.spigot());
             } catch (Exception e) {
                 locale = p.getLocale();
@@ -85,7 +85,7 @@ public class Listener implements org.bukkit.event.Listener {
 
         String locale;
         try {
-            Method getLocale = Class.forName("org.bukkit.entity.Player.Spigot").getMethod("getLocale");
+            Method getLocale = Player.Spigot.class.getMethod("getLocale");
             locale = (String) getLocale.invoke(p.spigot());
         } catch (Exception e) {
             locale = p.getLocale();
