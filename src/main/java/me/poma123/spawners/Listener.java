@@ -55,6 +55,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -68,14 +69,35 @@ public class Listener implements org.bukkit.event.Listener {
     private Material material = PickupSpawners.material;
 
     public static String getLang(Player p) {
-        String[] s = StringUtils.split(p.spigot().getLocale(), '_');
+        String locale;
+        try {
+            Method getLocale = Player.Spigot.class.getMethod("getLocale");
+            locale = (String) getLocale.invoke(p.spigot());
+        } catch (Exception e) {
+            locale = p.getLocale();
+        }
+
+        String[] s = StringUtils.split(locale, '_');
         return s[0];
     }
 
     public static String getLangExact(Player p) {
 
-        return p.spigot().getLocale();
+        String locale;
+        try {
+            Method getLocale = Player.Spigot.class.getMethod("getLocale");
+            locale = (String) getLocale.invoke(p.spigot());
+        } catch (Exception e) {
+            locale = p.getLocale();
+        }
 
+        return locale;
+
+       /* if (PickupSpawners.getVersion().contains("1_8_")) {
+            return p.spigot().getLocale();
+        } else {
+            return p.getLocale();
+        }*/
     }
 
     public static TextComponent getHoverClick(String message, String hover, String click) {
@@ -711,17 +733,16 @@ public class Listener implements org.bukkit.event.Listener {
     }
 
 
-
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onSpawnerPlace(BlockPlaceEvent event) {
         Block block = event.getBlockPlaced();
         ItemStack stack = event.getItemInHand();
         String lang = getLang(event.getPlayer());
+
         if (block.getState() instanceof CreatureSpawner && stack.hasItemMeta()) {
             ItemMeta meta = stack.getItemMeta();
 
             if (meta.getDisplayName().contains("§7Spawner")) {
-
                 CreatureSpawner spawner = (CreatureSpawner) block.getState();
                 String name = meta.getDisplayName();
 
@@ -736,7 +757,6 @@ public class Listener implements org.bukkit.event.Listener {
                         return;
 
                     }
-
                     if (!event.getPlayer().hasPermission("pickupspawners.place")) {
                         event.getPlayer().sendMessage("§cEhhez nincs jogod! Váltsd be slimefun-os spawnerre a §e/warp spawnerek §cwarpon!");
                         event.setCancelled(true);
@@ -895,14 +915,14 @@ public class Listener implements org.bukkit.event.Listener {
                                 swmeta.setDisplayName("§e" + spawnedType.toLowerCase() + " §7Spawner");
 
                                 spawner.setItemMeta(swmeta);
-                              //  if (count > 1) {
-                                    if (!p.getInventory().containsAtLeast(spawner, count)) {
-                                        //TODO LANGUAGE
-                                        p.sendMessage(me.poma123.spawners.Listener.getLang(p).equals("hu")
-                                                ? "§cNincs elég tárgyad az eladáshoz."
-                                                : "§cYou don't have enough items to sell.");
-                                        return;
-                                    }
+                                //  if (count > 1) {
+                                if (!p.getInventory().containsAtLeast(spawner, count)) {
+                                    //TODO LANGUAGE
+                                    p.sendMessage(me.poma123.spawners.Listener.getLang(p).equals("hu")
+                                            ? "§cNincs elég tárgyad az eladáshoz."
+                                            : "§cYou don't have enough items to sell.");
+                                    return;
+                                }
                               /*  } else {
                                     if (!p.getInventory().containsAtLeast(spawner, count)) {
                                         //TODO LANGUAGE
