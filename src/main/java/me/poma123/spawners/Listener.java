@@ -579,9 +579,16 @@ public class Listener implements org.bukkit.event.Listener {
             if (item == null) {
                 return;
             }
+
+
+
             for (String string : sett.getConfig().getConfigurationSection("item").getKeys(false)) {
                 ItemStack breakerItem = (ItemStack) sett.getConfig().get("item." + string + ".itemstack");
 
+                if (breakerItem == null) {
+                    return;
+                }
+                
                /* Material mat = Material
                         .matchMaterial(sett.getConfig().getString("item." + string + ".material").toUpperCase());*/
                 if (isItemStacksGood(breakerItem, item, string)) {
