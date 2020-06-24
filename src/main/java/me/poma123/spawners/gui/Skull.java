@@ -66,14 +66,13 @@ public enum Skull {
     /**
      * Return a skull that has a custom texture specified by url.
      *
-     * @param url skin url
      * @return itemstack
      */
 
     public static ItemStack getSkullMaterial(String type) {
         if (type.equalsIgnoreCase("player")) {
             ItemStack skull;
-            if (ps.getVersion().contains("1_13_R")) {
+            if (ps.isOnePointThirteen || ps.isOnePointFourteenPlus) {
                skull = new ItemStack(Material.PLAYER_HEAD, 1);
             } else {
                 skull = new ItemStack(Material.getMaterial("SKULL"), 1, (short) 3);
