@@ -40,7 +40,7 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
     public static Material material;
     public static List<String> entities = new ArrayList<String>();
     public static boolean isOnePointThirteen = false;
-    public static boolean isOnePointFourteen = false;
+    public static boolean isOnePointFourteenPlus = false;
     static VaultAPI vault;
     private static PickupSpawners instance;
     public int ID = 62455;
@@ -115,7 +115,7 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
         /*
          * Spawner material setting by version
          */
-        if (getVersion().contains("1_14") || getVersion().contains("1_15")) {
+        if (getVersion().contains("1_14") || getVersion().contains("1_15") ||getVersion().contains("1_16")) {
             material = Material.getMaterial("SPAWNER");
             getLogger().info("1.14+ native version detected. Configuring 1.14+ compatibility...");
             getLogger().info("Done!");
@@ -136,13 +136,13 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
 
         for (EntityType entity : EntityType.values()) {
             String list1 = "ILLUSIONER, GIANT, ENDER_DRAGON, WITHER, MUSHROOM_COW, SNOWMAN, IRON_GOLEM";
-            if (getVersion().contains("1_14") || getVersion().contains("1_15")) {
+            if (getVersion().contains("1_14") || getVersion().contains("1_15") || getVersion().contains("1_16")) {
 
                 if (entity.toString().toLowerCase().equals("pig_zombie")) {
                     if (debug) {
                         getLogger().info("[Debug] " + ChatColor.GREEN + entity.toString() + " added to the entities list.");
                     }
-                    isOnePointFourteen = true;
+                    isOnePointFourteenPlus = true;
                     entities.add(entity.toString().toLowerCase());
                 } else if (Material.getMaterial(entity.toString().toUpperCase() + "_SPAWN_EGG") != null || list1.contains(entity.toString().toUpperCase())) {
                     if (debug) {
@@ -385,7 +385,6 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
                 }
 
                 return c;
-
             }
         }));
         this.metrics.addCustomChart(new Metrics.SimplePie("spawner_breaker_items", new Callable<String>() {

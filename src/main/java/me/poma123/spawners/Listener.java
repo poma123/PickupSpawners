@@ -483,7 +483,7 @@ public class Listener implements org.bukkit.event.Listener {
                 }
             }
 
-            if (PickupSpawners.getVersion().contains("1_13_") || PickupSpawners.getVersion().contains("1_14_") || PickupSpawners.getVersion().contains("1_15_")) {
+            if (PickupSpawners.getVersion().contains("1_13_") || PickupSpawners.getVersion().contains("1_14_") || PickupSpawners.getVersion().contains("1_15_") || PickupSpawners.getVersion().contains("1_16_")) {
                 if (savedM instanceof Damageable && ((Damageable) savedM).hasDamage()) {
                     if (usedM instanceof Damageable && ((Damageable) usedM).hasDamage()) {
                         if (((Damageable) usedM).getDamage() == ((Damageable) savedM).getDamage()) {
