@@ -201,7 +201,7 @@ public class PickupGui implements Listener {
             inv.setItem(listByPage.indexOf(stack), stack);
         }
 
-        if (ps.getVersion().contains("1_13_R")) {
+        if (ps.isOnePointThirteen || ps.isOnePointFourteenPlus) {
             ItemStack back = GuiItem.getGuiSkullItem("MHF_ArrowLeft", "§aBack", Arrays.asList(backPageButtonAction.contains("pageBack_") ?
                     "§7Back to page " + (page - 1) : "§7Back to the main menu..."));
             inv.setItem(27, back);
@@ -252,7 +252,7 @@ public class PickupGui implements Listener {
 
         List<String> listByPage = sublists.get(page - 1);
 
-        if (ps.getVersion().contains("1_13_R") || ps.getVersion().contains("1_14_") || ps.getVersion().contains("1_15_") || ps.getVersion().contains("1_15_")) {
+        if (ps.isOnePointThirteen || ps.isOnePointFourteenPlus) {
             for (String s : listByPage) {
                 if (s.equalsIgnoreCase("pig_zombie")) {
                     ItemStack item = new ItemStack(Material.ZOMBIE_PIGMAN_SPAWN_EGG);
@@ -287,7 +287,7 @@ public class PickupGui implements Listener {
             }
         }
 
-        if (ps.getVersion().contains("1_13_R")) {
+        if (ps.isOnePointThirteen || ps.isOnePointFourteenPlus) {
             ItemStack back = GuiItem.getGuiSkullItem("MHF_ArrowLeft", "§aBack", Arrays.asList(backPageButtonAction.contains("pageBack_") ?
                     "§7Back to page " + (page - 1) : "§7Back to the main menu..."));
             inv.setItem(45, back);
