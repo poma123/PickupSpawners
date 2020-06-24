@@ -483,7 +483,7 @@ public class Listener implements org.bukkit.event.Listener {
                 }
             }
 
-            if (PickupSpawners.getVersion().contains("1_13_") || PickupSpawners.getVersion().contains("1_14_") || PickupSpawners.getVersion().contains("1_15_")) {
+            if (ps.isOnePointThirteen || ps.isOnePointFourteenPlus) {
                 if (savedM instanceof Damageable && ((Damageable) savedM).hasDamage()) {
                     if (usedM instanceof Damageable && ((Damageable) usedM).hasDamage()) {
                         if (((Damageable) usedM).getDamage() == ((Damageable) savedM).getDamage()) {
@@ -582,6 +582,10 @@ public class Listener implements org.bukkit.event.Listener {
             for (String string : sett.getConfig().getConfigurationSection("item").getKeys(false)) {
                 ItemStack breakerItem = (ItemStack) sett.getConfig().get("item." + string + ".itemstack");
 
+                if (breakerItem == null) {
+                    return;
+                }
+                
                /* Material mat = Material
                         .matchMaterial(sett.getConfig().getString("item." + string + ".material").toUpperCase());*/
                 if (isItemStacksGood(breakerItem, item, string)) {
