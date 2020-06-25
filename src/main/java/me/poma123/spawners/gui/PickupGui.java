@@ -255,7 +255,7 @@ public class PickupGui implements Listener {
         if (ps.isOnePointThirteen || ps.isOnePointFourteenPlus || ps.isOnePointSixteenPlus) {
             for (String s : listByPage) {
                 if (s.equalsIgnoreCase("pig_zombie")) {
-                    ItemStack item = new ItemStack(Material.ZOMBIE_PIGMAN_SPAWN_EGG);
+                    ItemStack item = new ItemStack(Material.getMaterial("ZOMBIE_PIGMAN_SPAWN_EGG"));
                     ItemMeta itemMeta = item.getItemMeta();
                     itemMeta.setDisplayName("§6§l" + "Zombie_pigman");
                     item.setItemMeta(itemMeta);
