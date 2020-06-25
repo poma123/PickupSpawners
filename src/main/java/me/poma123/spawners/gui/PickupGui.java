@@ -201,7 +201,7 @@ public class PickupGui implements Listener {
             inv.setItem(listByPage.indexOf(stack), stack);
         }
 
-        if (ps.isOnePointThirteen || ps.isOnePointFourteenPlus) {
+        if (ps.isOnePointThirteen || ps.isOnePointFourteenPlus || ps.isOnePointSixteenPlus) {
             ItemStack back = GuiItem.getGuiSkullItem("MHF_ArrowLeft", "§aBack", Arrays.asList(backPageButtonAction.contains("pageBack_") ?
                     "§7Back to page " + (page - 1) : "§7Back to the main menu..."));
             inv.setItem(27, back);
@@ -252,7 +252,7 @@ public class PickupGui implements Listener {
 
         List<String> listByPage = sublists.get(page - 1);
 
-        if (ps.isOnePointThirteen || ps.isOnePointFourteenPlus) {
+        if (ps.isOnePointThirteen || ps.isOnePointFourteenPlus || ps.isOnePointSixteenPlus) {
             for (String s : listByPage) {
                 if (s.equalsIgnoreCase("pig_zombie")) {
                     ItemStack item = new ItemStack(Material.ZOMBIE_PIGMAN_SPAWN_EGG);
@@ -287,7 +287,7 @@ public class PickupGui implements Listener {
             }
         }
 
-        if (ps.isOnePointThirteen || ps.isOnePointFourteenPlus) {
+        if (ps.isOnePointThirteen || ps.isOnePointFourteenPlus || ps.isOnePointSixteenPlus) {
             ItemStack back = GuiItem.getGuiSkullItem("MHF_ArrowLeft", "§aBack", Arrays.asList(backPageButtonAction.contains("pageBack_") ?
                     "§7Back to page " + (page - 1) : "§7Back to the main menu..."));
             inv.setItem(45, back);
@@ -316,9 +316,17 @@ public class PickupGui implements Listener {
 
     public ItemStack getSpawnegg(String type) {
 
-        if (ps.isOnePointThirteen || ps.isOnePointFourteenPlus) {
+        if (ps.isOnePointSixteenPlus) {
+
             if (type.equalsIgnoreCase("PIG_ZOMBIE")) {
-                return new ItemStack(Material.ZOMBIE_PIGMAN_SPAWN_EGG, 1);
+                return new ItemStack(Material.ZOMBIFIED_PIGLIN_SPAWN_EGG, 1);
+            } else {
+                return new ItemStack(Material.getMaterial(type.toUpperCase() + "_SPAWN_EGG"));
+            }
+
+        } else if (ps.isOnePointThirteen || ps.isOnePointFourteenPlus) {
+            if (type.equalsIgnoreCase("PIG_ZOMBIE")) {
+                return new ItemStack(Material.getMaterial("ZOMBIE_PIGMAN_SPAWN_EGG"), 1);
             } else {
                 return new ItemStack(Material.getMaterial(type.toUpperCase() + "_SPAWN_EGG"));
             }

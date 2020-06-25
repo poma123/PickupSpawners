@@ -483,7 +483,7 @@ public class Listener implements org.bukkit.event.Listener {
                 }
             }
 
-            if (ps.isOnePointThirteen || ps.isOnePointFourteenPlus) {
+            if (ps.isOnePointThirteen || ps.isOnePointFourteenPlus || ps.isOnePointSixteenPlus) {
                 if (savedM instanceof Damageable && ((Damageable) savedM).hasDamage()) {
                     if (usedM instanceof Damageable && ((Damageable) usedM).hasDamage()) {
                         if (((Damageable) usedM).getDamage() == ((Damageable) savedM).getDamage()) {
