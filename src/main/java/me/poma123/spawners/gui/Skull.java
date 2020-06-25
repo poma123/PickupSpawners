@@ -72,7 +72,7 @@ public enum Skull {
     public static ItemStack getSkullMaterial(String type) {
         if (type.equalsIgnoreCase("player")) {
             ItemStack skull;
-            if (ps.isOnePointThirteen || ps.isOnePointFourteenPlus) {
+            if (ps.isOnePointThirteen || ps.isOnePointFourteenPlus || ps.isOnePointSixteenPlus) {
                skull = new ItemStack(Material.PLAYER_HEAD, 1);
             } else {
                 skull = new ItemStack(Material.getMaterial("SKULL"), 1, (short) 3);

@@ -41,6 +41,7 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
     public static List<String> entities = new ArrayList<String>();
     public static boolean isOnePointThirteen = false;
     public static boolean isOnePointFourteenPlus = false;
+    public static boolean isOnePointSixteenPlus = false;
     static VaultAPI vault;
     private static PickupSpawners instance;
     public int ID = 62455;
@@ -115,7 +116,11 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
         /*
          * Spawner material setting by version
          */
-        if (getVersion().contains("1_14") || getVersion().contains("1_15") ||getVersion().contains("1_16")) {
+        if (getVersion().contains("1_16")) {
+            material = Material.getMaterial("SPAWNER");
+            getLogger().info("1.16+ native version detected. Configuring 1.16+ compatibility...");
+            getLogger().info("Done!");
+        } else if (getVersion().contains("1_14") || getVersion().contains("1_15")) {
             material = Material.getMaterial("SPAWNER");
             getLogger().info("1.14+ native version detected. Configuring 1.14+ compatibility...");
             getLogger().info("Done!");
@@ -138,12 +143,18 @@ public class PickupSpawners extends JavaPlugin implements org.bukkit.event.Liste
             String list1 = "ILLUSIONER, GIANT, ENDER_DRAGON, WITHER, MUSHROOM_COW, SNOWMAN, IRON_GOLEM";
             if (getVersion().contains("1_14") || getVersion().contains("1_15") || getVersion().contains("1_16")) {
 
+                if (getVersion().contains("1_16")) {
+                    isOnePointSixteenPlus= true;
+                }
+
                 if (entity.toString().toLowerCase().equals("pig_zombie")) {
                     if (debug) {
                         getLogger().info("[Debug] " + ChatColor.GREEN + entity.toString() + " added to the entities list.");
                     }
-                    isOnePointFourteenPlus = true;
-                    entities.add(entity.toString().toLowerCase());
+                    if (getVersion().contains("1_14") || getVersion().contains("1_15")) {
+                        isOnePointFourteenPlus = true;
+                        entities.add(entity.toString().toLowerCase());
+                    }
                 } else if (Material.getMaterial(entity.toString().toUpperCase() + "_SPAWN_EGG") != null || list1.contains(entity.toString().toUpperCase())) {
                     if (debug) {
                         getLogger().info("[Debug] " + ChatColor.GREEN + entity.toString() + " added to the entities list.");
