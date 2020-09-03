@@ -22,6 +22,10 @@
 			<id>papermc</id>
 			<url>https://papermc.io/repo/repository/maven-public/</url>
 		</repository>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
@@ -37,11 +41,10 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>net.milkbowl.vault</groupId>
+			<groupId>com.github.MilkBowl</groupId>
 			<artifactId>VaultAPI</artifactId>
 			<version>1.7</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/Vault.jar</systemPath>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.mojang</groupId>
