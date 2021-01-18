@@ -1,5 +1,7 @@
-# PickupSpawners
+# PickupSpawners (discontinued)
 PickupSpawners is lightweight plugin which adds an ability to pick up spawners.
+
+**Notice: I have stopped working on this plugin. If you want to keep it alive, fork it or consider contributing to it by creating a Pull Request. Support is no longer available.**
 
 ## Download PickupSpawners
 Download development and release builds from here:<br>
